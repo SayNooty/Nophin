@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>My Profile | Nophin</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .profile-container {
+      max-width: 1000px;
+      margin: 120px auto 60px;
+      padding: 0 20px;
+    }
+    
+    .profile-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .profile-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .profile-subtitle {
+      color: rgba(160, 180, 210, 0.7);
+    }
+    
+    .profile-card {
+      background: var(--panel-dark);
+      border-radius: 12px;
+      border: 1px solid var(--border-dark);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    
+    body.light .profile-card {
+      background: var(--panel-light);
+      border: 1px solid var(--border-light);
+    }
+    
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .profile-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: white;
+    }
+    
+    .profile-details h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: var(--text-dark);
+    }
+    
+    body.light .profile-details h3 {
+      color: var(--text-light);
+    }
+    
+    .profile-details p {
+      color: rgba(160, 180, 210, 0.8);
+      margin-bottom: 5px;
+    }
+    
+    body.light .profile-details p {
+      color: rgba(17, 24, 39, 0.7);
+    }
+    
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+    
+    body.light .section-title {
+      border-bottom: 1px solid var(--border-light);
+    }
+    
+    .add-mod-btn {
+      padding: 10px 16px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
+    }
+    
+    .add-mod-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    }
+    
+    .my-mods-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    
+    .mod-card {
+      background: var(--panel-dark);
+      border-radius: 12px;
+      border: 1px solid var(--border-dark);
+      padding: 20px;
+      transition: var(--transition);
+    }
+    
+    .mod-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+    }
+    
+    body.light .mod-card {
+      background: var(--panel-light);
+      border: 1px solid var(--border-light);
+    }
+    
+    .mod-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    
+    body.light .mod-title {
+      color: var(--text-light);
+    }
+    
+    .mod-description {
+      color: rgba(160, 180, 210, 0.8);
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+    
+    body.light .mod-description {
+      color: rgba(17, 24, 39, 0.7);
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: rgba(160, 180, 210, 0.7);
+      grid-column: 1 / -1;
+    }
+    
+    .empty-state i {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: rgba(160, 180, 210, 0.3);
+    }
+    
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: rgba(160, 180, 210, 0.9);
+    }
+    
+    .empty-state p {
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    body.light .empty-state {
+      color: rgba(17, 24, 39, 0.6);
+    }
+    
+    body.light .empty-state i {
+      color: rgba(17, 24, 39, 0.2);
+    }
+    
+    body.light .empty-state h3 {
+      color: rgba(17, 24, 39, 0.8);
+    }
+    
+    @media (max-width: 768px) {
+      .profile-container {
+        margin: 100px auto 40px;
+      }
+      
+      .profile-title {
+        font-size: 2rem;
+      }
+      
+      .profile-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+      }
+      
+      .my-mods-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div id="header-container"></div>
+
+  <!-- Profile Content -->
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1 class="profile-title">My Profile</h1>
+      <p class="profile-subtitle">Manage your account and projects</p>
+    </div>
+    
+    <div class="profile-card">
+      <div class="profile-info">
+        <div class="profile-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <div class="profile-details" id="profileDetails">
+          <!-- Profile details will be loaded by JavaScript -->
+        </div>
+      </div>
+      
+      <div class="section-title">
+        <span>My Mods</span>
+        <button class="add-mod-btn" id="addModBtn">
+          <i class="fas fa-plus"></i> Add Mod
+        </button>
+      </div>
+      
+      <div class="my-mods-grid" id="myModsGrid">
+        <!-- User's mods will be loaded by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Modal (auth/project) -->
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button id="modalClose" class="modal-close" aria-label="Close"><i class="fas fa-times"></i></button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Load components -->
+  <script type="module">
+    import { createHeader, initNavDropdowns } from '../../components/header.js';
+    import { createFooter } from '../../components/footer.js';
+    import { createProfileDropdown, checkAuthStatus, setupProfileDropdown, updateProfileName } from '../../components/profile.js';
+    import { setupAuthHandlers, showLoginModal } from '../../components/auth.js';
+    
+    // Константы для фильтров
+    const minecraftVersions = [
+      '1.0', '1.1', '1.2.1', '1.2.3', '1.2.4', '1.2.5',
+      '1.3.1', '1.3.2',
+      '1.4.2', '1.4.4', '1.4.5', '1.4.6', '1.4.7',
+      '1.5', '1.5.1', '1.5.2',
+      '1.6.1', '1.6.2', '1.6.4',
+      '1.7.2', '1.7.4', '1.7.5', '1.7.6', '1.7.7', '1.7.8', '1.7.9', '1.7.10',
+      '1.8', '1.8.1', '1.8.2', '1.8.3', '1.8.4', '1.8.5', '1.8.6', '1.8.7', '1.8.8', '1.8.9',
+      '1.9', '1.9.1', '1.9.2', '1.9.3', '1.9.4',
+      '1.10', '1.10.1', '1.10.2',
+      '1.11', '1.11.1', '1.11.2',
+      '1.12', '1.12.1', '1.12.2',
+      '1.13', '1.13.1', '1.13.2',
+      '1.14', '1.14.1', '1.14.2', '1.14.3', '1.14.4',
+      '1.15', '1.15.1', '1.15.2',
+      '1.16.1', '1.16.2', '1.16.3', '1.16.4', '1.16.5',
+      '1.17', '1.17.1',
+      '1.18', '1.18.1', '1.18.2',
+      '1.19', '1.19.1', '1.19.2', '1.19.3', '1.19.4',
+      '1.20', '1.20.1', '1.20.2', '1.20.3', '1.20.4'
+    ];
+    
+    const loaders = ['Forge', 'Fabric', 'Quilt', 'NeoForge'];
+    const categories = [
+      'Adventure', 'Decoration', 'Economy', 'Equipment', 'Food', 
+      'Game Mechanics', 'Library', 'Magic', 'Mobs', 'Optimization', 
+      'Social', 'Storage', 'Technology', 'Utility', 'World Generation'
+    ];
+    const environments = ['Client', 'Server', 'Both'];
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const authStatus = checkAuthStatus();
+      
+      // Если пользователь не авторизован, перенаправляем на главную
+      if (!authStatus.isLoggedIn) {
+        alert('Please login to access your profile');
+        window.location.href = '/index.html';
+        return;
+      }
+      
+      initPage(authStatus);
+    });
+    
+    function initPage(authStatus) {
+      console.log('Initializing profile page...');
+      
+      // Загружаем header
+      const headerContainer = document.getElementById('header-container');
+      if (headerContainer) {
+        headerContainer.innerHTML = createHeader();
+      }
+      
+      // Загружаем footer
+      const footerContainer = document.getElementById('footer-container');
+      if (footerContainer) {
+        footerContainer.innerHTML = createFooter();
+      }
+      
+      // Настраиваем профиль
+      const profileDropdown = document.getElementById('profileDropdown');
+      if (profileDropdown) {
+        profileDropdown.innerHTML = createProfileDropdown(
+          authStatus.isLoggedIn, 
+          authStatus.username
+        );
+      }
+      
+      // Обновляем имя в кнопке профиля
+      updateProfileName();
+      
+      // Настраиваем выпадающие меню
+      setupProfileDropdown();
+      initNavDropdowns();
+      
+      // Настраиваем обработчики авторизации
+      setupAuthHandlers();
+      
+      // Настраиваем модальное окно
+      const modalClose = document.getElementById('modalClose');
+      const modalBackdrop = document.getElementById('modalBackdrop');
+      
+      if (modalClose && modalBackdrop) {
+        modalClose.addEventListener('click', () => {
+          modalBackdrop.classList.remove('show');
+        });
+        
+        modalBackdrop.addEventListener('click', (e) => {
+          if (e.target === modalBackdrop) {
+            modalBackdrop.classList.remove('show');
+          }
+        });
+      }
+      
+      // Заполняем информацию профиля
+      fillProfileDetails(authStatus);
+      
+      // Загружаем моды пользователя
+      loadUserMods(authStatus.username);
+      
+      // Настраиваем кнопку добавления мода
+      const addModBtn = document.getElementById('addModBtn');
+      if (addModBtn) {
+        addModBtn.addEventListener('click', () => {
+          showAddModModal(authStatus.username);
+        });
+      }
+      
+      console.log('Profile page initialized successfully');
+    }
+    
+    function fillProfileDetails(authStatus) {
+      const profileDetails = document.getElementById('profileDetails');
+      if (profileDetails) {
+        profileDetails.innerHTML = `
+          <h3>${authStatus.username}</h3>
+          <p><i class="fas fa-envelope"></i> ${authStatus.email}</p>
+          <p><i class="fas fa-calendar"></i> Member since ${new Date().toLocaleDateString()}</p>
+        `;
+      }
+    }
+    
+    function loadUserMods(username) {
+      try {
+        const mods = JSON.parse(localStorage.getItem('nophin_mods') || '[]');
+        const userMods = mods.filter(mod => mod.author === username);
+        const myModsGrid = document.getElementById('myModsGrid');
+        
+        if (!myModsGrid) return;
+        
+        if (userMods.length === 0) {
+          myModsGrid.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-regular fa-cube"></i>
+              <h3>No mods yet</h3>
+              <p>You haven't uploaded any mods yet. Click "Add Mod" to get started!</p>
+            </div>
+          `;
+          return;
+        }
+        
+        myModsGrid.innerHTML = userMods.map(mod => `
+          <div class="mod-card">
+            <h3 class="mod-title">${mod.title || 'Untitled Mod'}</h3>
+            <p class="mod-description">${mod.description || 'No description available.'}</p>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+              <span style="color: rgba(160, 180, 210, 0.6); font-size: 0.85rem;">
+                <i class="fas fa-download"></i> ${mod.downloads || 0}
+              </span>
+              <span style="color: rgba(160, 180, 210, 0.6); font-size: 0.85rem;">
+                <i class="fas fa-star"></i> ${mod.rating || 0}
+              </span>
+              <span style="color: rgba(160, 180, 210, 0.6); font-size: 0.85rem;">
+                <i class="fas fa-calendar"></i> ${mod.date || 'Unknown'}
+              </span>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading user mods:', error);
+      }
+    }
+    
+    function showAddModModal(username) {
+      const modalContent = document.getElementById('modalContent');
+      if (!modalContent) return;
+      
+      modalContent.innerHTML = `
+        <h3 style="margin-bottom: 20px; color: var(--accent);">Add Minecraft Mod</h3>
+        <form id="addModForm" style="display: flex; flex-direction: column; gap: 15px; max-height: 70vh; overflow-y: auto; padding-right: 10px;">
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Icon Image (128px - 4096px)</label>
+            <div style="border: 2px dashed var(--border-dark); border-radius: 8px; padding: 30px; text-align: center; cursor: pointer;" id="imageUpload">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Click to upload mod icon</p>
+              <p style="font-size: 0.8rem; opacity: 0.7;">Min: 128px, Max: 4096px</p>
+              <img id="imagePreview" style="max-width: 100%; max-height: 200px; border-radius: 8px; display: none;" alt="Preview">
+            </div>
+            <input type="file" id="imageInput" accept="image/*" style="display: none;">
+          </div>
+          
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Mod Name</label>
+            <input type="text" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-dark); background: rgba(255, 255, 255, 0.02); color: inherit; outline: none;" id="modName" required>
+          </div>
+          
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Description</label>
+            <textarea style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-dark); background: rgba(255, 255, 255, 0.02); color: inherit; outline: none; min-height: 80px; resize: vertical;" id="modDescription" required></textarea>
+          </div>
+          
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Supported Minecraft Versions</label>
+            <select style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-dark); background: rgba(255, 255, 255, 0.02); color: inherit; outline: none; height: 120px;" id="modVersions" multiple>
+              ${minecraftVersions.map(v => `<option value="${v}">${v}</option>`).join('')}
+            </select>
+            <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 5px;">Hold Ctrl/Cmd to select multiple</p>
+          </div>
+          
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Mod Loaders</label>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+              ${loaders.map(loader => `
+                <label style="display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" value="${loader}" name="loaders">
+                  <span>${loader}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+          
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Mod Version</label>
+            <input type="text" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-dark); background: rgba(255, 255, 255, 0.02); color: inherit; outline: none;" id="modVersion" placeholder="e.g., 1.0.0" required>
+          </div>
+          
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Environment</label>
+            <select style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-dark); background: rgba(255, 255, 255, 0.02); color: inherit; outline: none;" id="modEnvironment">
+              <option value="Client">Client</option>
+              <option value="Server">Server</option>
+              <option value="Both">Both</option>
+            </select>
+          </div>
+          
+          <div>
+            <label style="font-weight: 700; color: var(--accent); font-size: 14px; display: block; margin-bottom: 5px;">Categories</label>
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+              ${categories.map(cat => `
+                <label style="display: flex; align-items: center; gap: 8px;">
+                  <input type="checkbox" value="${cat}" name="categories">
+                  <span>${cat}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+          
+          <button type="submit" class="btn" style="margin-top: 20px;">
+            <i class="fas fa-plus"></i> Add Mod
+          </button>
+        </form>
+      `;
+      
+      // Image upload functionality
+      const imageUpload = document.getElementById('imageUpload');
+      const imageInput = document.getElementById('imageInput');
+      const imagePreview = document.getElementById('imagePreview');
+      
+      if (imageUpload && imageInput && imagePreview) {
+        imageUpload.addEventListener('click', () => imageInput.click());
+        
+        imageInput.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              imagePreview.src = e.target.result;
+              imagePreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+      
+      // Show modal
+      document.getElementById('modalBackdrop').classList.add('show');
+      
+      // Form submission
+      const addModForm = document.getElementById('addModForm');
+      if (addModForm) {
+        addModForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          
+          const selectedVersions = Array.from(document.getElementById('modVersions').selectedOptions)
+            .map(opt => opt.value);
+          
+          const selectedLoaders = Array.from(document.querySelectorAll('input[name="loaders"]:checked'))
+            .map(cb => cb.value);
+          
+          const selectedCategories = Array.from(document.querySelectorAll('input[name="categories"]:checked'))
+            .map(cb => cb.value);
+          
+          const newMod = {
+            title: document.getElementById('modName').value,
+            description: document.getElementById('modDescription').value,
+            versions: selectedVersions,
+            loaders: selectedLoaders,
+            categories: selectedCategories,
+            modVersion: document.getElementById('modVersion').value,
+            environment: document.getElementById('modEnvironment').value,
+            author: username,
+            imageUrl: imagePreview ? imagePreview.src : null
+          };
+          
+          try {
+            const mods = JSON.parse(localStorage.getItem('nophin_mods') || '[]');
+            const modWithId = {
+              id: Date.now(),
+              ...newMod,
+              downloads: 0,
+              rating: 4.5,
+              date: new Date().toLocaleDateString()
+            };
+            mods.push(modWithId);
+            localStorage.setItem('nophin_mods', JSON.stringify(mods));
+            
+            document.getElementById('modalBackdrop').classList.remove('show');
+            loadUserMods(username);
+            
+            alert('Mod added successfully!');
+          } catch (error) {
+            console.error('Error saving mod:', error);
+            alert('Error saving mod. Please try again.');
+          }
+        });
+      }
+    }
+  </script>
+</body>
+</html>

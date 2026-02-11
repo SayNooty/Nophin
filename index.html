@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nophin | Home</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- NAV -->
+  <nav class="main-nav">
+    <div class="nav-center">
+      <div class="nav-left">
+        <a class="nav-btn logo-btn" href="index.html"><i class="fas fa-rocket"></i> NOPHIN</a>
+        
+        <!-- Minecraft с выпадающим меню -->
+        <div class="nav-item">
+          <button class="nav-btn game-btn">
+            <i class="game-icon minecraft-icon fab fa-microsoft"></i> Minecraft
+          </button>
+          <div class="dropdown-menu">
+            <a href="pages/categories/minecraft/mods.html" class="dropdown-item"><i class="fas fa-regular fa-cube"></i> Mods</a>
+            <a href="minecraft/datapacks.html" class="dropdown-item"><i class="fas fa-solid fa-code"></i> Datapacks</a>
+            <a href="minecraft/plugins.html" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> Plugins</a>
+            <a href="minecraft/modpacks.html" class="dropdown-item"><i class="fas fa-solid fa-box"></i> Modpacks</a>
+            <a href="minecraft/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
+            <a href="minecraft/resourcep-packs.html" class="dropdown-item"><i class="fas fa-toolbox"></i> Resource Packs</a>
+            <a href="minecraft/shaders.html" class="dropdown-item"><i class="fas fa-solid fa-image"></i> Shaders</a>
+          </div>
+        </div>
+        
+        <!-- Minecraft Bedrock с выпадающим меню -->
+        <div class="nav-item">
+          <button class="nav-btn game-btn">
+            <i class="game-icon bedrock-icon fas fa-mobile-alt"></i> Minecraft Bedrock
+          </button>
+          <div class="dropdown-menu">
+            <a href="minecraft-bedrock/addons.html" class="dropdown-item"><i class="fas fa-regular fa-cube"></i> Addons</a>
+            <a href="minecraft-bedrock/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
+            <a href="minecraft-bedrock/texture-packs.html" class="dropdown-item"><i class="fas fa-toolbox"></i> Texture Packs</a>
+            <a href="minecraft-bedrock/scripts.html" class="dropdown-item"><i class="fas fa-solid fa-code"></i> Scripts</a>
+            <a href="minecraft-bedrock/skins.html" class="dropdown-item"><i class="fas fa-solid fa-user"></i> Skins</a>
+          </div>
+        </div>
+        
+        <!-- Terraria с выпадающим меню -->
+        <div class="nav-item">
+          <button class="nav-btn game-btn">
+            <i class="game-icon terraria-icon fas fa-dungeon"></i> Terraria
+          </button>
+          <div class="dropdown-menu">
+            <a href="terraria/mods.html" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> Mods</a>
+            <a href="terraria/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
+          </div>
+        </div>
+        
+        <!-- Hytale с выпадающим меню -->
+        <div class="nav-item">
+          <button class="nav-btn game-btn">
+            <i class="game-icon hytale-icon fas fa-gamepad"></i> Hytale
+          </button>
+          <div class="dropdown-menu">
+            <a href="hytale/mods.html" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> Mods</a>
+            <a href="hytale/boostraps.html" class="dropdown-item"><i class="fas fa-solid fa-gauge"></i> Bootstraps</a>
+            <a href="hytale/prefabs.html" class="dropdown-item"><i class="fas fa-regular fa-house"></i> Prefabs</a>
+            <a href="hytale/translations.html" class="dropdown-item"><i class="fas fa-solid fa-language"></i> Translations</a>
+            <a href="hytale/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="profile-item">
+          <button id="profileBtn" class="profile-btn"><i class="fas fa-user"></i> <span id="profileName">Login</span> <i class="fas fa-caret-down caret"></i></button>
+          <div id="profileDropdown" class="profile-dropdown"></div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero-container">
+    <h1 class="main-title">NOPHIN</h1>
+    <p class="subtitle">MODDING COMMUNITY</p>
+    <div class="hero-description">
+      <p class="description-text">
+        Открывайте для себя контент Minecraft, Terraria и Hytale,<br>
+        играйте в них распространяйте их на нашей платформе.
+      </p>
+    </div>
+  </header>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Modal (auth/project) -->
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <button id="modalClose" class="modal-close" aria-label="Close"><i class="fas fa-times"></i></button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createFooter } from './components/footer.js';
+    import { checkAuthStatus, createProfileDropdown, setupProfileDropdown } from './components/profile.js';
+    import { setupAuthHandlers } from './components/auth.js';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Initializing index.html...');
+      
+      // Загружаем footer
+      const footerContainer = document.getElementById('footer-container');
+      if (footerContainer) {
+        footerContainer.innerHTML = createFooter();
+      }
+      
+      // Настраиваем профиль
+      const authStatus = checkAuthStatus();
+      const profileDropdown = document.getElementById('profileDropdown');
+      const profileName = document.getElementById('profileName');
+      
+      if (profileDropdown) {
+        profileDropdown.innerHTML = createProfileDropdown(
+          authStatus.isLoggedIn, 
+          authStatus.username
+        );
+      }
+      
+      if (profileName && authStatus.isLoggedIn) {
+        profileName.textContent = authStatus.username;
+      }
+      
+      // Настраиваем выпадающее меню профиля
+      setupProfileDropdown();
+      
+      // Настраиваем обработчики авторизации
+      setupAuthHandlers();
+      
+      // Настраиваем модальное окно
+      const modalClose = document.getElementById('modalClose');
+      const modalBackdrop = document.getElementById('modalBackdrop');
+      
+      if (modalClose && modalBackdrop) {
+        modalClose.addEventListener('click', () => {
+          modalBackdrop.classList.remove('show');
+        });
+        
+        modalBackdrop.addEventListener('click', (e) => {
+          if (e.target === modalBackdrop) {
+            modalBackdrop.classList.remove('show');
+          }
+        });
+      }
+      
+      // Инициализируем выпадающие меню навигации
+      const navItems = document.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        const dropdown = item.querySelector('.dropdown-menu');
+        if (dropdown) {
+          item.addEventListener('mouseenter', () => {
+            dropdown.style.opacity = '1';
+            dropdown.style.visibility = 'visible';
+            dropdown.style.transform = 'translateY(5px)';
+          });
+          
+          item.addEventListener('mouseleave', () => {
+            dropdown.style.opacity = '0';
+            dropdown.style.visibility = 'hidden';
+            dropdown.style.transform = 'translateY(10px)';
+          });
+        }
+      });
+      
+      console.log('Index page initialized successfully');
+    });
+  </script>
+</body>
+</html>

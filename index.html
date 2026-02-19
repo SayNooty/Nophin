@@ -1,180 +1,1060 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Nophin | Home</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nophin — платформа контента</title>
+    <!-- Font Awesome 6 (бесплатный) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ---------- Общие стили ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #0e1117;
+            background-image: radial-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #f2f2f3;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Стеклянные кнопки и панели */
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+        }
+
+        /* Шапка */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.8rem 2rem;
+            background: rgba(10, 12, 16, 0.7);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid #2a2f3a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .logo:hover { opacity: 0.9; }
+
+        /* Центральное меню игр */
+        .games-nav {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .game-dropdown {
+            position: relative;
+        }
+
+        .game-btn {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 30px;
+            padding: 0.6rem 1.2rem;
+            color: #f2f2f3;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .game-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 120%;
+            left: 0;
+            min-width: 220px;
+            background: rgba(20, 25, 35, 0.9);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 0.5rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: 0.2s;
+            z-index: 50;
+        }
+
+        .game-dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1.2rem;
+            color: #f2f2f3;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .dropdown-content a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        .dropdown-content i {
+            color: #4978f5;
+            width: 1.2rem;
+            text-align: center;
+        }
+
+        /* Кнопка профиля */
+        .profile-dropdown {
+            position: relative;
+        }
+
+        .profile-btn {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 30px;
+            padding: 0.6rem 1.5rem;
+            color: #f2f2f3;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .profile-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .profile-menu {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            min-width: 220px;
+            background: rgba(20, 25, 35, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 0.5rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: 0.2s;
+            z-index: 50;
+        }
+        .profile-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-menu a, .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1.2rem;
+            color: #f2f2f3;
+            text-decoration: none;
+        }
+        .profile-info {
+            background: rgba(255,255,255,0.05);
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .profile-menu a:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        #logoutBtn {
+            background: #5e2a2a;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+        #logoutBtn:hover {
+            background: #7a3a3a;
+        }
+
+        /* Подвал */
+        .footer {
+            background: #0a0c10;
+            padding: 2.5rem 2rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 2rem;
+            border-top: 1px solid #1e2128;
+            margin-top: 3rem;
+        }
+        .footer-column h4 {
+            color: #f2f2f3;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .footer-column ul {
+            list-style: none;
+        }
+        .footer-column li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-column a {
+            color: #f2f2f3;
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .footer-column a:hover {
+            opacity: 1;
+        }
+        .footer-column p {
+            color: #8c9bb6;
+            font-size: 0.9rem;
+        }
+
+        /* Основной контейнер страниц */
+        .pages {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .page {
+            display: none;
+        }
+        .page.active {
+            display: block;
+        }
+
+        /* Главная страница */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .logo-large {
+            font-size: 6rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 0.5rem 0 1rem;
+        }
+        .hero-description {
+            color: #8c9bb6;
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+        .btn.primary {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+        }
+        .btn.primary:hover {
+            filter: brightness(1.1);
+            transform: scale(1.02);
+        }
+        .btn.secondary {
+            background: transparent;
+            border: 2px solid #2a3f5e;
+            color: #8c9bb6;
+        }
+        .btn.secondary:hover {
+            background: #2a3f5e;
+            color: white;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid #2a2f3a;
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            transition: 0.2s;
+        }
+        .feature-card:hover {
+            border-color: #4978f5;
+            transform: translateY(-5px);
+        }
+        .feature-card i {
+            color: #4978f5;
+            margin-bottom: 1rem;
+        }
+
+        /* Страница настроек */
+        .settings-container {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 2rem;
+        }
+        .settings-sidebar {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(8px);
+            border: 1px solid #2a2f3a;
+            border-radius: 16px;
+            padding: 1rem 0;
+        }
+        .settings-sidebar li {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            color: #8c9bb6;
+            transition: 0.2s;
+            border-left: 3px solid transparent;
+            list-style: none;
+        }
+        .settings-sidebar li.active {
+            background: rgba(73,120,245,0.1);
+            color: #4978f5;
+            border-left-color: #4978f5;
+        }
+        .settings-content {
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(8px);
+            border: 1px solid #2a2f3a;
+            border-radius: 16px;
+            padding: 2rem;
+        }
+        .setting-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #2a2f3a;
+        }
+        .setting-item label {
+            display: block;
+            color: #8c9bb6;
+            margin-bottom: 0.5rem;
+        }
+        .setting-item input, .setting-item select, .setting-item textarea {
+            background: #1e2128;
+            border: 1px solid #2a2f3a;
+            color: #f2f2f3;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .radio-group {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2128;
+            border: 1px solid #2a3f5e;
+            border-radius: 40px;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            z-index: 200;
+            transition: 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+        .notification.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .notification button {
+            background: #2a3f5e;
+            border: none;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        /* Формы регистрации, создания проекта */
+        .form-card {
+            background: rgba(255,255,255,0.02);
+            backdrop-filter: blur(8px);
+            border: 1px solid #2a2f3a;
+            border-radius: 24px;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #8c9bb6;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: #1e2128;
+            border: 1px solid #2a2f3a;
+            border-radius: 12px;
+            color: #f2f2f3;
+        }
+        .social-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .social-btn {
+            flex: 1;
+            min-width: 100px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 30px;
+            padding: 0.6rem;
+            color: #f2f2f3;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* Список проектов */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .project-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid #2a2f3a;
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .project-card:hover {
+            border-color: #4978f5;
+        }
+        .project-status {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            background: #2a2f3a;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header {
+                flex-wrap: wrap;
+                padding: 1rem;
+            }
+            .games-nav {
+                order: 3;
+                width: 100%;
+                margin-top: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .settings-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-  <!-- NAV -->
-  <nav class="main-nav">
-    <div class="nav-center">
-      <div class="nav-left">
-        <a class="nav-btn logo-btn" href="index.html"><i class="fas fa-rocket"></i> NOPHIN</a>
-        
-        <!-- Minecraft с выпадающим меню -->
-        <div class="nav-item">
-          <button class="nav-btn game-btn">
-            <i class="game-icon minecraft-icon fab fa-microsoft"></i> Minecraft
-          </button>
-          <div class="dropdown-menu">
-            <a href="pages/categories/minecraft/mods.html" class="dropdown-item"><i class="fas fa-regular fa-cube"></i> Mods</a>
-            <a href="minecraft/datapacks.html" class="dropdown-item"><i class="fas fa-solid fa-code"></i> Datapacks</a>
-            <a href="minecraft/plugins.html" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> Plugins</a>
-            <a href="minecraft/modpacks.html" class="dropdown-item"><i class="fas fa-solid fa-box"></i> Modpacks</a>
-            <a href="minecraft/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
-            <a href="minecraft/resourcep-packs.html" class="dropdown-item"><i class="fas fa-toolbox"></i> Resource Packs</a>
-            <a href="minecraft/shaders.html" class="dropdown-item"><i class="fas fa-solid fa-image"></i> Shaders</a>
-          </div>
+    <header class="header">
+        <div class="logo" onclick="showPage('home')">Nophin</div>
+        <nav class="games-nav">
+            <!-- Minecraft -->
+            <div class="game-dropdown">
+                <button class="game-btn"><i class="fas fa-cube"></i> Minecraft</button>
+                <div class="dropdown-content">
+                    <a href="#"><i class="fas fa-cube"></i> моды</a>
+                    <a href="#"><i class="fas fa-database"></i> датапаки</a>
+                    <a href="#"><i class="fas fa-puzzle-piece"></i> плагины</a>
+                    <a href="#"><i class="fas fa-layer-group"></i> модпаки</a>
+                    <a href="#"><i class="fas fa-map"></i> карты</a>
+                    <a href="#"><i class="fas fa-palette"></i> ресурс-паки</a>
+                    <a href="#"><i class="fas fa-sun"></i> шейдеры</a>
+                </div>
+            </div>
+            <!-- Bedrock -->
+            <div class="game-dropdown">
+                <button class="game-btn"><i class="fas fa-cubes"></i> Minecraft Bedrock</button>
+                <div class="dropdown-content">
+                    <a href="#"><i class="fas fa-puzzle-piece"></i> аддоны</a>
+                    <a href="#"><i class="fas fa-map"></i> карты</a>
+                    <a href="#"><i class="fas fa-palette"></i> текстур-паки</a>
+                    <a href="#"><i class="fas fa-code"></i> скрипты</a>
+                    <a href="#"><i class="fas fa-user"></i> скины</a>
+                </div>
+            </div>
+            <!-- Terraria -->
+            <div class="game-dropdown">
+                <button class="game-btn"><i class="fas fa-leaf"></i> Terraria</button>
+                <div class="dropdown-content">
+                    <a href="#"><i class="fas fa-cube"></i> моды</a>
+                    <a href="#"><i class="fas fa-map"></i> карты</a>
+                </div>
+            </div>
+            <!-- Hytale -->
+            <div class="game-dropdown">
+                <button class="game-btn"><i class="fas fa-dragon"></i> Hytale</button>
+                <div class="dropdown-content">
+                    <a href="#"><i class="fas fa-cube"></i> моды</a>
+                    <a href="#"><i class="fas fa-tachometer-alt"></i> ускорители</a>
+                    <a href="#"><i class="fas fa-draw-polygon"></i> схематики</a>
+                    <a href="#"><i class="fas fa-map"></i> карты</a>
+                    <a href="#"><i class="fas fa-language"></i> локализации</a>
+                </div>
+            </div>
+        </nav>
+        <div class="profile-dropdown" id="profileDropdown">
+            <button class="profile-btn" id="profileBtn"><i class="fas fa-user"></i> Профиль</button>
+            <div class="profile-menu" id="profileMenu"></div>
         </div>
-        
-        <!-- Minecraft Bedrock с выпадающим меню -->
-        <div class="nav-item">
-          <button class="nav-btn game-btn">
-            <i class="game-icon bedrock-icon fas fa-mobile-alt"></i> Minecraft Bedrock
-          </button>
-          <div class="dropdown-menu">
-            <a href="minecraft-bedrock/addons.html" class="dropdown-item"><i class="fas fa-regular fa-cube"></i> Addons</a>
-            <a href="minecraft-bedrock/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
-            <a href="minecraft-bedrock/texture-packs.html" class="dropdown-item"><i class="fas fa-toolbox"></i> Texture Packs</a>
-            <a href="minecraft-bedrock/scripts.html" class="dropdown-item"><i class="fas fa-solid fa-code"></i> Scripts</a>
-            <a href="minecraft-bedrock/skins.html" class="dropdown-item"><i class="fas fa-solid fa-user"></i> Skins</a>
-          </div>
-        </div>
-        
-        <!-- Terraria с выпадающим меню -->
-        <div class="nav-item">
-          <button class="nav-btn game-btn">
-            <i class="game-icon terraria-icon fas fa-dungeon"></i> Terraria
-          </button>
-          <div class="dropdown-menu">
-            <a href="terraria/mods.html" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> Mods</a>
-            <a href="terraria/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
-          </div>
-        </div>
-        
-        <!-- Hytale с выпадающим меню -->
-        <div class="nav-item">
-          <button class="nav-btn game-btn">
-            <i class="game-icon hytale-icon fas fa-gamepad"></i> Hytale
-          </button>
-          <div class="dropdown-menu">
-            <a href="hytale/mods.html" class="dropdown-item"><i class="fas fa-puzzle-piece"></i> Mods</a>
-            <a href="hytale/boostraps.html" class="dropdown-item"><i class="fas fa-solid fa-gauge"></i> Bootstraps</a>
-            <a href="hytale/prefabs.html" class="dropdown-item"><i class="fas fa-regular fa-house"></i> Prefabs</a>
-            <a href="hytale/translations.html" class="dropdown-item"><i class="fas fa-solid fa-language"></i> Translations</a>
-            <a href="hytale/maps.html" class="dropdown-item"><i class="fas fa-map"></i> Maps</a>
-          </div>
-        </div>
-      </div>
+    </header>
 
-      <div class="nav-right">
-        <div class="profile-item">
-          <button id="profileBtn" class="profile-btn"><i class="fas fa-user"></i> <span id="profileName">Login</span> <i class="fas fa-caret-down caret"></i></button>
-          <div id="profileDropdown" class="profile-dropdown"></div>
+    <div class="pages">
+        <!-- Главная страница -->
+        <div id="home-page" class="page active">
+            <section class="hero">
+                <div class="logo-large">N</div>
+                <h1 class="hero-title gradient-text">Nophin</h1>
+                <p class="hero-description">Платформа для контента по играм Minecraft, Terraria и Hytale. Скачивай и публикуй моды, карты, ресурс-паки и многое другое!</p>
+                <div class="hero-buttons">
+                    <button class="btn primary"><i class="fas fa-search"></i> Поиск контента</button>
+                    <button class="btn secondary"><i class="fas fa-newspaper"></i> Новости</button>
+                </div>
+            </section>
+            <section class="features">
+                <div class="feature-card">
+                    <i class="fas fa-download fa-3x"></i>
+                    <h3>Скачивай контент</h3>
+                    <p>Тысячи модов, карт и текстур для любимых игр.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-upload fa-3x"></i>
+                    <h3>Публикуй свои работы</h3>
+                    <p>Делись творчеством с миллионами игроков.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-comments fa-3x"></i>
+                    <h3>Общайся с сообществом</h3>
+                    <p>Обсуждай проекты, получай отзывы.</p>
+                </div>
+            </section>
         </div>
-      </div>
+
+        <!-- Страница настроек -->
+        <div id="settings-page" class="page">
+            <div class="settings-container">
+                <ul class="settings-sidebar">
+                    <li class="active" data-tab="basic">Основное</li>
+                    <li data-tab="account">Аккаунт</li>
+                </ul>
+                <div class="settings-content">
+                    <div id="basic-tab" class="tab-content">
+                        <h2>Основные</h2>
+                        <div class="setting-item">
+                            <label>Тема</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="theme" value="light"> Светлая</label>
+                                <label><input type="radio" name="theme" value="dark" checked> Тёмная</label>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Язык</label>
+                            <select id="lang">
+                                <option value="ru">Русский</option>
+                                <option value="en">Английский</option>
+                            </select>
+                        </div>
+                        <div class="setting-item">
+                            <label>Расположение боковой панели</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="sidebar" value="left" checked> Слева</label>
+                                <label><input type="radio" name="sidebar" value="right"> Справа</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="account-tab" class="tab-content" style="display: none;">
+                        <h2>Аккаунт</h2>
+                        <div class="setting-item">
+                            <label>Фото профиля</label>
+                            <div style="display: flex; align-items: center; gap: 1rem;">
+                                <div style="width: 60px; height: 60px; border-radius: 50%; background: #2a3f5e;"></div>
+                                <button class="btn secondary">Загрузить</button>
+                            </div>
+                        </div>
+                        <div class="setting-item">
+                            <label>Имя пользователя</label>
+                            <input type="text" id="username" value="Player123">
+                        </div>
+                        <div class="setting-item">
+                            <label>О себе</label>
+                            <textarea id="bio" rows="3">Люблю майнкрафт</textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Регистрация -->
+        <div id="register-page" class="page">
+            <div class="form-card">
+                <h2 style="margin-bottom: 1.5rem;">Регистрация</h2>
+                <div class="social-buttons">
+                    <div class="social-btn"><i class="fab fa-github"></i> GitHub</div>
+                    <div class="social-btn"><i class="fab fa-google"></i> Google</div>
+                    <div class="social-btn"><i class="fab fa-yandex"></i> Яндекс</div>
+                    <div class="social-btn"><i class="fab fa-microsoft"></i> Microsoft</div>
+                </div>
+                <p style="text-align: center; color: #8c9bb6; margin-bottom: 1rem;">или</p>
+                <div class="form-group">
+                    <label>Электронная почта</label>
+                    <input type="email" id="reg-email" placeholder="mail@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Имя пользователя</label>
+                    <input type="text" id="reg-username" placeholder="Player123">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="reg-password">
+                </div>
+                <div class="form-group">
+                    <label>Подтверждение пароля</label>
+                    <input type="password" id="reg-password2">
+                </div>
+                <div class="form-group">
+                    <label>Капча</label>
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <img src="https://via.placeholder.com/120x40/2a2f3a/ffffff?text=Captcha" style="border-radius: 8px;">
+                        <input type="text" placeholder="Введите код">
+                    </div>
+                </div>
+                <button class="btn primary" style="width: 100%;" onclick="register()">Зарегистрироваться</button>
+                <p style="text-align: center; margin-top: 1rem;">Уже есть аккаунт? <a href="#" onclick="showPage('home'); login()" style="color: #4978f5;">Войти</a></p>
+            </div>
+        </div>
+
+        <!-- Создание проекта -->
+        <div id="create-project-page" class="page">
+            <div class="form-card">
+                <h2 style="margin-bottom: 1.5rem;">Создание проекта</h2>
+                <div class="form-group">
+                    <label>Название проекта</label>
+                    <input type="text" id="project-name">
+                </div>
+                <div class="form-group">
+                    <label>URL ссылка</label>
+                    <input type="text" id="project-url" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea id="project-desc" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Видимость</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="visibility" value="public" checked> Публичный</label>
+                        <label><input type="radio" name="visibility" value="hidden"> Скрытый</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Игра</label>
+                    <select id="project-game" onchange="updateContentTypeFields()">
+                        <option value="minecraft">Minecraft</option>
+                        <option value="bedrock">Minecraft Bedrock</option>
+                        <option value="terraria">Terraria</option>
+                        <option value="hytale">Hytale</option>
+                    </select>
+                </div>
+                <div class="form-group" id="content-type-group">
+                    <label>Тип контента</label>
+                    <select id="project-type"></select>
+                </div>
+                <div id="minecraft-extra" style="display: none;">
+                    <div class="form-group">
+                        <label>Версия Minecraft</label>
+                        <select id="mc-version">
+                            <option>1.21</option><option>1.20.4</option><option>1.19.4</option><option>1.18.2</option>
+                            <option>1.17.1</option><option>1.16.5</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Загрузчик</label>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <label><input type="checkbox" value="forge"> Forge</label>
+                            <label><input type="checkbox" value="fabric"> Fabric</label>
+                            <label><input type="checkbox" value="neoforge"> NeoForge</label>
+                            <label><input type="checkbox" value="quilt"> Quilt</label>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                    <button class="btn secondary" onclick="showPage('home')">Отмена</button>
+                    <button class="btn primary" onclick="createProject()">Создать проект</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Страница проекта (редактирование) -->
+        <div id="project-page" class="page">
+            <div class="form-card" id="project-edit-form">
+                <!-- будет заполняться динамически -->
+            </div>
+        </div>
+
+        <!-- Мои проекты -->
+        <div id="my-projects-page" class="page">
+            <h2>Мои проекты</h2>
+            <div id="projects-list" class="projects-grid"></div>
+        </div>
     </div>
-  </nav>
 
-  <!-- HERO -->
-  <header class="hero-container">
-    <h1 class="main-title">NOPHIN</h1>
-    <p class="subtitle">MODDING COMMUNITY</p>
-    <div class="hero-description">
-      <p class="description-text">
-        Открывайте для себя контент Minecraft, Terraria и Hytale,<br>
-        играйте в них распространяйте их на нашей платформе.
-      </p>
+    <!-- Уведомление (для настроек) -->
+    <div id="notification" class="notification">
+        <span>Изменения не сохранены</span>
+        <button id="save-notify">Сохранить</button>
+        <button id="reset-notify">Сбросить</button>
     </div>
-  </header>
 
-  <!-- Footer -->
-  <div id="footer-container"></div>
+    <footer class="footer">
+        <div class="footer-column">
+            <h4>Игры</h4>
+            <ul>
+                <li><a href="#">Minecraft</a></li>
+                <li><a href="#">Minecraft Bedrock</a></li>
+                <li><a href="#">Terraria</a></li>
+                <li><a href="#">Hytale</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Поддержка</h4>
+            <ul><li><a href="#">Помощь</a></li><li><a href="#">FAQ</a></li></ul>
+        </div>
+        <div class="footer-column">
+            <h4>Соцсети</h4>
+            <ul>
+                <li><a href="https://t.me/nop_hin" target="_blank"><i class="fab fa-telegram"></i> Telegram</a></li>
+                <li><a href="#"><i class="fab fa-tiktok"></i> TikTok</a></li>
+                <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h4>Лицензия</h4>
+            <p>© 2025 Nophin</p>
+        </div>
+        <div class="footer-column">
+            <h4>Правовые нормы</h4>
+            <ul>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Условия использования</a></li>
+                <li><a href="#">Правила контента</a></li>
+            </ul>
+        </div>
+    </footer>
 
-  <!-- Modal (auth/project) -->
-  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <button id="modalClose" class="modal-close" aria-label="Close"><i class="fas fa-times"></i></button>
-      <div id="modalContent"></div>
-    </div>
-  </div>
+    <script>
+        // ---------- Глобальные переменные и состояние ----------
+        let isLoggedIn = localStorage.getItem('nophin_logged') === 'true';
+        let currentUser = localStorage.getItem('nophin_user') || 'Player123';
+        let projects = JSON.parse(localStorage.getItem('nophin_projects')) || [];
 
-  <script type="module">
-    import { createFooter } from './components/footer.js';
-    import { checkAuthStatus, createProfileDropdown, setupProfileDropdown } from './components/profile.js';
-    import { setupAuthHandlers } from './components/auth.js';
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('Initializing index.html...');
-      
-      // Загружаем footer
-      const footerContainer = document.getElementById('footer-container');
-      if (footerContainer) {
-        footerContainer.innerHTML = createFooter();
-      }
-      
-      // Настраиваем профиль
-      const authStatus = checkAuthStatus();
-      const profileDropdown = document.getElementById('profileDropdown');
-      const profileName = document.getElementById('profileName');
-      
-      if (profileDropdown) {
-        profileDropdown.innerHTML = createProfileDropdown(
-          authStatus.isLoggedIn, 
-          authStatus.username
-        );
-      }
-      
-      if (profileName && authStatus.isLoggedIn) {
-        profileName.textContent = authStatus.username;
-      }
-      
-      // Настраиваем выпадающее меню профиля
-      setupProfileDropdown();
-      
-      // Настраиваем обработчики авторизации
-      setupAuthHandlers();
-      
-      // Настраиваем модальное окно
-      const modalClose = document.getElementById('modalClose');
-      const modalBackdrop = document.getElementById('modalBackdrop');
-      
-      if (modalClose && modalBackdrop) {
-        modalClose.addEventListener('click', () => {
-          modalBackdrop.classList.remove('show');
-        });
-        
-        modalBackdrop.addEventListener('click', (e) => {
-          if (e.target === modalBackdrop) {
-            modalBackdrop.classList.remove('show');
-          }
-        });
-      }
-      
-      // Инициализируем выпадающие меню навигации
-      const navItems = document.querySelectorAll('.nav-item');
-      navItems.forEach(item => {
-        const dropdown = item.querySelector('.dropdown-menu');
-        if (dropdown) {
-          item.addEventListener('mouseenter', () => {
-            dropdown.style.opacity = '1';
-            dropdown.style.visibility = 'visible';
-            dropdown.style.transform = 'translateY(5px)';
-          });
-          
-          item.addEventListener('mouseleave', () => {
-            dropdown.style.opacity = '0';
-            dropdown.style.visibility = 'hidden';
-            dropdown.style.transform = 'translateY(10px)';
-          });
+        // Функция переключения страниц
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId + '-page').classList.add('active');
+            // Обновляем URL hash
+            window.location.hash = pageId;
+            // Если страница мои проекты, загружаем список
+            if (pageId === 'my-projects') renderMyProjects();
+            if (pageId === 'project') {
+                // если открыта страница проекта без id, показываем заглушку
+            }
         }
-      });
-      
-      console.log('Index page initialized successfully');
-    });
-  </script>
+
+        // Инициализация по хешу
+        function handleHash() {
+            let hash = window.location.hash.slice(1) || 'home';
+            if (document.getElementById(hash + '-page')) {
+                showPage(hash);
+            } else {
+                showPage('home');
+            }
+        }
+        window.addEventListener('hashchange', handleHash);
+
+        // ---------- Профиль и авторизация ----------
+        function updateProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            if (isLoggedIn) {
+                menu.innerHTML = `
+                    <div class="profile-info"><i class="fas fa-user-circle"></i> ${currentUser}</div>
+                    <a href="#" onclick="showPage('create-project'); return false;"><i class="fas fa-plus-circle"></i> Создать проект</a>
+                    <a href="#" onclick="showPage('my-projects'); return false;"><i class="fas fa-folder"></i> Мои проекты</a>
+                    <a href="#" onclick="showPage('settings'); return false;"><i class="fas fa-cog"></i> Настройки</a>
+                    <a href="#" id="logoutBtn" onclick="logout(); return false;"><i class="fas fa-sign-out-alt"></i> Выйти</a>
+                `;
+            } else {
+                menu.innerHTML = `
+                    <a href="#" onclick="showPage('register'); return false;"><i class="fas fa-user-plus"></i> Зарегистрироваться</a>
+                    <a href="#" onclick="login(); return false;"><i class="fas fa-sign-in-alt"></i> Войти</a>
+                `;
+            }
+        }
+
+        // Имитация входа
+        function login() {
+            isLoggedIn = true;
+            currentUser = 'Player123';
+            localStorage.setItem('nophin_logged', 'true');
+            localStorage.setItem('nophin_user', currentUser);
+            updateProfileMenu();
+            showPage('home');
+            closeProfileMenu();
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            localStorage.removeItem('nophin_logged');
+            updateProfileMenu();
+            showPage('home');
+            closeProfileMenu();
+        }
+
+        function register() {
+            // упрощённо: считаем что регистрация успешна
+            login(); // после регистрации сразу логиним
+        }
+
+        // Меню профиля (открыть/закрыть)
+        const profileBtn = document.getElementById('profileBtn');
+        const profileMenu = document.getElementById('profileMenu');
+        const profileDropdown = document.getElementById('profileDropdown');
+
+        function toggleProfileMenu(e) {
+            e.stopPropagation();
+            profileMenu.classList.toggle('show');
+        }
+
+        function closeProfileMenu() {
+            profileMenu.classList.remove('show');
+        }
+
+        profileBtn.addEventListener('click', toggleProfileMenu);
+        document.addEventListener('click', (e) => {
+            if (!profileDropdown.contains(e.target)) closeProfileMenu();
+        });
+
+        // Заполняем меню при загрузке
+        updateProfileMenu();
+
+        // ---------- Настройки: переключение табов и уведомления ----------
+        document.querySelectorAll('.settings-sidebar li').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.settings-sidebar li').forEach(li => li.classList.remove('active'));
+                this.classList.add('active');
+                const tab = this.dataset.tab;
+                document.querySelectorAll('.settings-content .tab-content').forEach(tc => tc.style.display = 'none');
+                document.getElementById(tab + '-tab').style.display = 'block';
+            });
+        });
+
+        // Имитация изменений - показываем уведомление
+        const inputs = document.querySelectorAll('#settings-page input, #settings-page select, #settings-page textarea');
+        const notification = document.getElementById('notification');
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                notification.classList.add('show');
+            });
+        });
+        document.getElementById('save-notify').addEventListener('click', () => {
+            notification.classList.remove('show');
+            // здесь можно сохранить
+        });
+        document.getElementById('reset-notify').addEventListener('click', () => {
+            notification.classList.remove('show');
+            // сброс к исходным
+        });
+
+        // ---------- Создание проекта: динамические поля ----------
+        function updateContentTypeFields() {
+            const game = document.getElementById('project-game').value;
+            const typeSelect = document.getElementById('project-type');
+            const minecraftExtra = document.getElementById('minecraft-extra');
+            let options = [];
+            if (game === 'minecraft') {
+                options = ['моды', 'датапаки', 'плагины', 'модпаки', 'карты', 'ресурс-паки', 'шейдеры'];
+                minecraftExtra.style.display = 'block';
+            } else if (game === 'bedrock') {
+                options = ['аддоны', 'карты', 'текстур-паки', 'скрипты', 'скины'];
+                minecraftExtra.style.display = 'none';
+            } else if (game === 'terraria') {
+                options = ['моды', 'карты'];
+                minecraftExtra.style.display = 'none';
+            } else if (game === 'hytale') {
+                options = ['моды', 'ускорители', 'схематики', 'локализации', 'карты'];
+                minecraftExtra.style.display = 'none';
+            }
+            typeSelect.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+        }
+        updateContentTypeFields(); // при загрузке
+
+        function createProject() {
+            if (!isLoggedIn) { alert('Нужно войти'); return; }
+            const name = document.getElementById('project-name').value;
+            const url = document.getElementById('project-url').value;
+            const desc = document.getElementById('project-desc').value;
+            const visibility = document.querySelector('input[name="visibility"]:checked').value;
+            const game = document.getElementById('project-game').value;
+            const type = document.getElementById('project-type').value;
+            let mcVersion = '', loaders = [];
+            if (game === 'minecraft') {
+                mcVersion = document.getElementById('mc-version').value;
+                loaders = Array.from(document.querySelectorAll('#minecraft-extra input[type="checkbox"]:checked')).map(cb => cb.value);
+            }
+            const project = {
+                id: Date.now(),
+                name, url, desc, visibility, game, type,
+                mcVersion, loaders,
+                status: 'черновик',
+                author: currentUser
+            };
+            projects.push(project);
+            localStorage.setItem('nophin_projects', JSON.stringify(projects));
+            // Открываем страницу проекта с этим id
+            openProject(project.id);
+        }
+
+        function openProject(id) {
+            const project = projects.find(p => p.id === id);
+            if (!project) return;
+            // Заполняем #project-edit-form
+            const form = document.getElementById('project-edit-form');
+            form.innerHTML = `
+                <h2>${project.name}</h2>
+                <div class="form-group"><label>Название</label><input value="${project.name}" id="edit-name"></div>
+                <div class="form-group"><label>URL</label><input value="${project.url}" id="edit-url"></div>
+                <div class="form-group"><label>Описание</label><textarea id="edit-desc">${project.desc}</textarea></div>
+                <div class="form-group"><label>Видимость</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="edit-visibility" value="public" ${project.visibility==='public'?'checked':''}> Публичный</label>
+                        <label><input type="radio" name="edit-visibility" value="hidden" ${project.visibility==='hidden'?'checked':''}> Скрытый</label>
+                    </div>
+                </div>
+                <div class="form-group"><label>Игра</label><input value="${project.game}" disabled></div>
+                <div class="form-group"><label>Тип контента</label><input value="${project.type}" disabled></div>
+                ${project.game === 'minecraft' ? `
+                    <div class="form-group"><label>Версия</label><input value="${project.mcVersion}"></div>
+                    <div class="form-group"><label>Загрузчики</label><input value="${project.loaders.join(', ')}"></div>
+                ` : ''}
+                <div class="form-group"><label>Статус: <span class="project-status">${project.status}</span></label></div>
+                <button class="btn primary" onclick="submitForReview(${project.id})">Отправить на проверку</button>
+                <button class="btn secondary" onclick="approveProject(${project.id})" style="margin-left: 1rem;">Одобрить (тест)</button>
+            `;
+            showPage('project');
+        }
+
+        function submitForReview(id) {
+            const project = projects.find(p => p.id === id);
+            if (project) {
+                project.status = 'на модерации';
+                localStorage.setItem('nophin_projects', JSON.stringify(projects));
+                alert('Проект отправлен на проверку');
+                openProject(id);
+            }
+        }
+
+        function approveProject(id) {
+            const project = projects.find(p => p.id === id);
+            if (project) {
+                project.status = 'одобрен';
+                localStorage.setItem('nophin_projects', JSON.stringify(projects));
+                alert('Проект одобрен (тест)');
+                openProject(id);
+            }
+        }
+
+        function renderMyProjects() {
+            const list = document.getElementById('projects-list');
+            const userProjects = projects.filter(p => p.author === currentUser);
+            if (userProjects.length === 0) {
+                list.innerHTML = '<p>У вас пока нет проектов</p>';
+                return;
+            }
+            list.innerHTML = userProjects.map(p => `
+                <div class="project-card" onclick="openProject(${p.id})">
+                    <h3>${p.name}</h3>
+                    <p>${p.game} — ${p.type}</p>
+                    <span class="project-status">${p.status}</span>
+                </div>
+            `).join('');
+        }
+
+        // Инициализация при загрузке
+        window.onload = function() {
+            handleHash();
+            // Если нет сохранённых проектов, создаём тестовые?
+        };
+    </script>
 </body>
 </html>

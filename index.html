@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nophin — Открытая платформа для модов, плагинов и датапаков</title>
+    <title>Nophin — Моды, Сборки и Плагины</title>
     <!-- Иконки Lucide -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --bg-primary: #0d0b18;
-            --bg-secondary: #16122b;
-            --bg-card: #201a3c;
-            --bg-card-hover: #2a224e;
+            --bg-primary: #0b0914;
+            --bg-secondary: #141026;
+            --bg-card: #1c1735;
+            --bg-card-hover: #261f47;
             --accent-primary: #8b5cf6;
             --accent-hover: #a78bfa;
             --accent-glow: rgba(139, 92, 246, 0.35);
             --text-main: #f3f0ff;
-            --text-muted: #a79bcf;
-            --border-color: #31275c;
-            --tag-bg: #2d2454;
+            --text-muted: #9ba1c0;
+            --border-color: #2e2652;
+            --tag-bg: #28204a;
             --success: #10b981;
+            --danger: #ef4444;
         }
 
         * {
@@ -37,14 +38,11 @@
             flex-direction: column;
         }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+        a { color: inherit; text-decoration: none; }
 
-        /* Навигация */
+        /* Шапка */
         header {
-            background-color: rgba(22, 18, 43, 0.8);
+            background-color: rgba(20, 16, 38, 0.85);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-color);
             position: sticky;
@@ -53,7 +51,7 @@
         }
 
         .nav-container {
-            max-width: 1300px;
+            max-width: 1350px;
             margin: 0 auto;
             display: flex;
             align-items: center;
@@ -67,8 +65,8 @@
             gap: 0.6rem;
             font-size: 1.5rem;
             font-weight: 800;
-            letter-spacing: -0.5px;
             color: var(--accent-hover);
+            cursor: pointer;
         }
 
         .logo i {
@@ -78,29 +76,36 @@
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
-            align-items: center;
+            gap: 0.8rem;
             list-style: none;
         }
 
-        .nav-links a {
+        .nav-tab {
             color: var(--text-muted);
             font-weight: 600;
             font-size: 0.95rem;
-            transition: color 0.2s;
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 0.4rem;
         }
 
-        .nav-links a:hover, .nav-links a.active {
+        .nav-tab:hover, .nav-tab.active {
             color: var(--text-main);
+            background-color: var(--bg-card);
+        }
+
+        .nav-tab.active {
+            border-bottom: 2px solid var(--accent-primary);
         }
 
         .nav-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
         }
 
         .btn {
@@ -138,17 +143,17 @@
             border-color: var(--accent-primary);
         }
 
-        /* Герой-секция */
+        /* Баннер поиска */
         .hero {
-            background: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 60%);
-            padding: 4rem 1.5rem 3rem;
+            background: radial-gradient(circle at 50% 20%, rgba(139, 92, 246, 0.18) 0%, transparent 65%);
+            padding: 3rem 1.5rem 2rem;
             text-align: center;
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: 2.8rem;
             font-weight: 800;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
             background: linear-gradient(180deg, #ffffff 0%, var(--text-muted) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -156,13 +161,11 @@
 
         .hero p {
             color: var(--text-muted);
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             max-width: 650px;
-            margin: 0 auto 2rem;
-            line-height: 1.6;
+            margin: 0 auto 1.8rem;
         }
 
-        /* Поисковая строка */
         .search-box {
             max-width: 700px;
             margin: 0 auto;
@@ -195,18 +198,17 @@
             color: var(--text-muted);
         }
 
-        /* Основной контент */
+        /* Контент и фильтры */
         .main-container {
-            max-width: 1300px;
-            margin: 2rem auto;
+            max-width: 1350px;
+            margin: 1.5rem auto;
             padding: 0 1.5rem;
             display: grid;
-            grid-template-columns: 260px 1fr;
+            grid-template-columns: 280px 1fr;
             gap: 2rem;
             flex: 1;
         }
 
-        /* Боковые фильтры */
         .filters {
             background-color: var(--bg-secondary);
             padding: 1.2rem;
@@ -215,16 +217,34 @@
             height: fit-content;
         }
 
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--accent-hover);
+            font-size: 0.82rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
         .filter-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.4rem;
         }
 
         .filter-title {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: var(--text-muted);
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.6rem;
             font-weight: 700;
         }
 
@@ -232,32 +252,35 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            padding: 0.5rem 0.6rem;
+            padding: 0.45rem 0.5rem;
             border-radius: 6px;
             cursor: pointer;
             color: var(--text-muted);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.15s;
-            margin-bottom: 0.2rem;
+            user-select: none;
         }
 
-        .filter-option:hover, .filter-option.active {
+        .filter-option:hover {
             background-color: var(--bg-card);
-            color: var(--accent-hover);
+            color: var(--text-main);
         }
 
         .filter-option input[type="checkbox"] {
             accent-color: var(--accent-primary);
             width: 16px;
             height: 16px;
+            cursor: pointer;
         }
 
-        /* Сетка карточек */
+        /* Вывод результатов */
         .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1.2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
         }
 
         .results-count {
@@ -269,10 +292,11 @@
             background-color: var(--bg-secondary);
             color: var(--text-main);
             border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
+            padding: 0.55rem 1rem;
             border-radius: 8px;
             outline: none;
             cursor: pointer;
+            font-weight: 600;
         }
 
         .cards-grid {
@@ -289,7 +313,7 @@
             display: flex;
             gap: 1.2rem;
             transition: all 0.2s;
-            position: relative;
+            cursor: pointer;
         }
 
         .card:hover {
@@ -299,21 +323,19 @@
         }
 
         .card-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 10px;
+            width: 68px;
+            height: 68px;
+            border-radius: 12px;
             background-color: var(--bg-card);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 2rem;
             flex-shrink: 0;
             border: 1px solid var(--border-color);
         }
 
-        .card-content {
-            flex: 1;
-        }
+        .card-content { flex: 1; }
 
         .card-header {
             display: flex;
@@ -323,7 +345,7 @@
         }
 
         .card-title {
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-main);
         }
@@ -346,9 +368,17 @@
             overflow: hidden;
         }
 
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
         .card-tags {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.4rem;
             flex-wrap: wrap;
         }
 
@@ -359,6 +389,7 @@
             border-radius: 6px;
             font-size: 0.78rem;
             font-weight: 600;
+            border: 1px solid rgba(139, 92, 246, 0.2);
         }
 
         .card-stats {
@@ -375,16 +406,120 @@
             gap: 0.3rem;
         }
 
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--text-muted);
+            background-color: var(--bg-secondary);
+            border-radius: 12px;
+            border: 1px dashed var(--border-color);
+        }
+
+        /* Модальные окна */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 1.8rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            transform: translateY(20px);
+            transition: transform 0.2s;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close-btn:hover { color: var(--text-main); }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.95rem;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .form-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.5rem;
+        }
+
         /* Футер */
         footer {
             background-color: var(--bg-secondary);
             border-top: 1px solid var(--border-color);
-            padding: 2.5rem 1.5rem;
+            padding: 2rem 1.5rem;
             margin-top: 4rem;
         }
 
         .footer-container {
-            max-width: 1300px;
+            max-width: 1350px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -393,57 +528,44 @@
             gap: 1.5rem;
         }
 
-        .footer-info {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* Адаптивность */
         @media (max-width: 900px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-
-            .filters {
-                display: none; /* Простая мобильная версия */
-            }
-
-            .hero h1 {
-                font-size: 2.2rem;
-            }
+            .main-container { grid-template-columns: 1fr; }
+            .filters { display: none; }
+            .filters.mobile-open { display: block; }
+            .hero h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Навигационная панель -->
+    <!-- Навигация -->
     <header>
         <div class="nav-container">
-            <a href="#" class="logo">
+            <div class="logo" id="logo-btn">
                 <i data-lucide="hexagons"></i>
                 <span>Nophin</span>
-            </a>
+            </div>
             <ul class="nav-links">
-                <li><a href="#" class="active"><i data-lucide="compass"></i> Обзор</a></li>
-                <li><a href="#"><i data-lucide="box"></i> Моды</a></li>
-                <li><a href="#"><i data-lucide="layers"></i> Сборки</a></li>
-                <li><a href="#"><i data-lucide="paint-bucket"></i> Текстуры</a></li>
-                <li><a href="#"><i data-lucide="code"></i> Плагины</a></li>
+                <li class="nav-tab active" data-type="all"><i data-lucide="compass"></i> Всё</li>
+                <li class="nav-tab" data-type="mod"><i data-lucide="box"></i> Моды</li>
+                <li class="nav-tab" data-type="modpack"><i data-lucide="layers"></i> Сборки</li>
+                <li class="nav-tab" data-type="resourcepack"><i data-lucide="paint-bucket"></i> Текстуры</li>
+                <li class="nav-tab" data-type="plugin"><i data-lucide="code"></i> Плагины</li>
             </ul>
             <div class="nav-actions">
-                <button class="btn btn-secondary"><i data-lucide="plus-circle"></i> Создать</button>
-                <button class="btn btn-primary"><i data-lucide="log-in"></i> Войти</button>
+                <button class="btn btn-primary" id="open-create-modal"><i data-lucide="plus-circle"></i> Создать</button>
+                <button class="btn btn-secondary" id="login-btn"><i data-lucide="log-in"></i> Войти</button>
             </div>
         </div>
     </header>
 
-    <!-- Главная секция c поиском -->
+    <!-- Главная секционная поиск -->
     <section class="hero">
         <h1>Свобода для вашего творчества</h1>
-        <p>Открытый, быстрый и безопасный хаб для игровых модификаций, текстур-паков и серверов. Создано сообществом для сообщества.</p>
+        <p>Открытая платформа для модов, плагинов и датапаков. Загружайте свои проекты, находите лучшие дополнения.</p>
         <div class="search-box">
             <i data-lucide="search" class="search-icon"></i>
-            <input type="text" class="search-input" placeholder="Поиск модов, плагинов, датапаков, авторов...">
+            <input type="text" id="search-input" class="search-input" placeholder="Поиск модов, авторов, категорий...">
         </div>
     </section>
 
@@ -451,138 +573,128 @@
     <div class="main-container">
         <!-- Боковой фильтр -->
         <aside class="filters">
-            <div class="filter-group">
-                <div class="filter-title">Категория</div>
-                <label class="filter-option"><input type="checkbox" checked> Модпаки</label>
-                <label class="filter-option"><input type="checkbox" checked> Моды</label>
-                <label class="filter-option"><input type="checkbox"> Ресурспаки</label>
-                <label class="filter-option"><input type="checkbox"> Шейдеры</label>
-                <label class="filter-option"><input type="checkbox"> Плагины</label>
+            <div class="filter-header">
+                <strong>Фильтры</strong>
+                <button class="reset-btn" id="reset-filters">Сбросить</button>
             </div>
 
             <div class="filter-group">
                 <div class="filter-title">Загрузчик (Loader)</div>
-                <label class="filter-option"><input type="checkbox" checked> Fabric</label>
-                <label class="filter-option"><input type="checkbox"> Forge</label>
-                <label class="filter-option"><input type="checkbox" checked> NeoForge</label>
-                <label class="filter-option"><input type="checkbox"> Quilt</label>
+                <label class="filter-option"><input type="checkbox" class="filter-loader" value="Fabric"> Fabric</label>
+                <label class="filter-option"><input type="checkbox" class="filter-loader" value="Forge"> Forge</label>
+                <label class="filter-option"><input type="checkbox" class="filter-loader" value="NeoForge"> NeoForge</label>
+                <label class="filter-option"><input type="checkbox" class="filter-loader" value="Quilt"> Quilt</label>
+                <label class="filter-option"><input type="checkbox" class="filter-loader" value="Paper"> Paper / Spigot</label>
             </div>
 
             <div class="filter-group">
                 <div class="filter-title">Версия игры</div>
-                <label class="filter-option"><input type="checkbox" checked> 1.20.4</label>
-                <label class="filter-option"><input type="checkbox"> 1.20.1</label>
-                <label class="filter-option"><input type="checkbox"> 1.19.2</label>
-                <label class="filter-option"><input type="checkbox"> 1.12.2</label>
+                <label class="filter-option"><input type="checkbox" class="filter-version" value="1.20.4"> 1.20.4</label>
+                <label class="filter-option"><input type="checkbox" class="filter-version" value="1.20.1"> 1.20.1</label>
+                <label class="filter-option"><input type="checkbox" class="filter-version" value="1.19.2"> 1.19.2</label>
+                <label class="filter-option"><input type="checkbox" class="filter-version" value="1.16.5"> 1.16.5</label>
+                <label class="filter-option"><input type="checkbox" class="filter-version" value="1.12.2"> 1.12.2</label>
+            </div>
+
+            <div class="filter-group">
+                <div class="filter-title">Теги</div>
+                <label class="filter-option"><input type="checkbox" class="filter-tag" value="Оптимизация"> Оптимизация</label>
+                <label class="filter-option"><input type="checkbox" class="filter-tag" value="Космос"> Космос</label>
+                <label class="filter-option"><input type="checkbox" class="filter-tag" value="RPG"> RPG</label>
+                <label class="filter-option"><input type="checkbox" class="filter-tag" value="Биомы"> Биомы</label>
+                <label class="filter-option"><input type="checkbox" class="filter-tag" value="Магия"> Магия</label>
+                <label class="filter-option"><input type="checkbox" class="filter-tag" value="Утилиты"> Утилиты</label>
             </div>
         </aside>
 
         <!-- Список проектов -->
         <main>
             <div class="content-header">
-                <span class="results-count">Найдено 1,482 проектов</span>
-                <select class="sort-select">
-                    <option>Популярные</option>
-                    <option>Недавно обновленные</option>
-                    <option>Новые</option>
-                    <option>Скачиваемые</option>
+                <span class="results-count" id="results-count">Загрузка проектов...</span>
+                <select class="sort-select" id="sort-select">
+                    <option value="downloads">По скачиваниям</option>
+                    <option value="likes">По лайкам</option>
+                    <option value="newest">Сначала новые</option>
                 </select>
             </div>
 
-            <div class="cards-grid">
-                <!-- Карточка 1 -->
-                <div class="card">
-                    <div class="card-icon" style="color: #a78bfa;">⚡</div>
-                    <div class="card-content">
-                        <div class="card-header">
-                            <div>
-                                <span class="card-title">Aetheria Optimization</span>
-                                <span class="card-author">от @modder_x</span>
-                            </div>
-                            <div class="card-stats">
-                                <span class="stat-item"><i data-lucide="download" size="16"></i> 1.2M</span>
-                                <span class="stat-item"><i data-lucide="heart" size="16"></i> 45K</span>
-                            </div>
-                        </div>
-                        <p class="card-description">Комплексный мод для кардинального повышения FPS, оптимизации чанков и снижения потребления оперативной памяти.</p>
-                        <div class="card-tags">
-                            <span class="tag">Fabric</span>
-                            <span class="tag">NeoForge</span>
-                            <span class="tag">Оптимизация</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Карточка 2 -->
-                <div class="card">
-                    <div class="card-icon" style="color: #38bdf8;">🌌</div>
-                    <div class="card-content">
-                        <div class="card-header">
-                            <div>
-                                <span class="card-title">Astral Horizons</span>
-                                <span class="card-author">от @CosmosTeam</span>
-                            </div>
-                            <div class="card-stats">
-                                <span class="stat-item"><i data-lucide="download" size="16"></i> 850K</span>
-                                <span class="stat-item"><i data-lucide="heart" size="16"></i> 32K</span>
-                            </div>
-                        </div>
-                        <p class="card-description">Исследуйте космос, стройте ракеты и открывайте новые планеты с собственной гравитацией и ресурсами.</p>
-                        <div class="card-tags">
-                            <span class="tag">Fabric</span>
-                            <span class="tag">Технологии</span>
-                            <span class="tag">Космос</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Карточка 3 -->
-                <div class="card">
-                    <div class="card-icon" style="color: #f43f5e;">⚔️</div>
-                    <div class="card-content">
-                        <div class="card-header">
-                            <div>
-                                <span class="card-title">Medieval RPG Overhaul</span>
-                                <span class="card-author">от @FantasyLab</span>
-                            </div>
-                            <div class="card-stats">
-                                <span class="stat-item"><i data-lucide="download" size="16"></i> 540K</span>
-                                <span class="stat-item"><i data-lucide="heart" size="16"></i> 19K</span>
-                            </div>
-                        </div>
-                        <p class="card-description">Полная переработка боевой системы, новые классы, прокачка навыков, подземелья и боссы.</p>
-                        <div class="card-tags">
-                            <span class="tag">Forge</span>
-                            <span class="tag">Приключения</span>
-                            <span class="tag">RPG</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Карточка 4 -->
-                <div class="card">
-                    <div class="card-icon" style="color: #10b981;">🌿</div>
-                    <div class="card-content">
-                        <div class="card-header">
-                            <div>
-                                <span class="card-title">Lush Biomes Redefined</span>
-                                <span class="card-author">от @NatureDev</span>
-                            </div>
-                            <div class="card-stats">
-                                <span class="stat-item"><i data-lucide="download" size="16"></i> 2.1M</span>
-                                <span class="stat-item"><i data-lucide="heart" size="16"></i> 88K</span>
-                            </div>
-                        </div>
-                        <p class="card-description">Более 50+ живописных биомов с уникальной флорой, фауной и атмосферным эмбиентом.</p>
-                        <div class="card-tags">
-                            <span class="tag">Fabric</span>
-                            <span class="tag">NeoForge</span>
-                            <span class="tag">Биомы</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="cards-grid" id="projects-list">
+                <!-- Карточки рендерятся через JS -->
             </div>
         </main>
+    </div>
+
+    <!-- Модальное окно: Создание проекта -->
+    <div class="modal-overlay" id="create-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">Публикация нового проекта</div>
+                <button class="close-btn" class="close-modal">&times;</button>
+            </div>
+            <form id="create-project-form">
+                <div class="form-group">
+                    <label class="form-label">Название проекта *</label>
+                    <input type="text" id="project-title" class="form-input" placeholder="Например: Advanced Automation" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Тип контента</label>
+                    <select id="project-type" class="form-select">
+                        <option value="mod">Мод</option>
+                        <option value="modpack">Сборка</option>
+                        <option value="resourcepack">Текстур-пак</option>
+                        <option value="plugin">Плагин</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Иконка (Эмодзи)</label>
+                    <input type="text" id="project-icon" class="form-input" placeholder="⚡, 🚀, ⚔️, ⚙️..." value="📦">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Краткое описание *</label>
+                    <textarea id="project-description" class="form-textarea" rows="3" placeholder="Расскажите о возможностях вашего проекта..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Поддерживаемые загрузчики</label>
+                    <div class="form-checkboxes">
+                        <label class="filter-option"><input type="checkbox" name="loaders" value="Fabric" checked> Fabric</label>
+                        <label class="filter-option"><input type="checkbox" name="loaders" value="Forge"> Forge</label>
+                        <label class="filter-option"><input type="checkbox" name="loaders" value="NeoForge"> NeoForge</label>
+                        <label class="filter-option"><input type="checkbox" name="loaders" value="Paper"> Paper</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Теги (через запятую)</label>
+                    <input type="text" id="project-tags" class="form-input" placeholder="Оптимизация, Утилиты, Магия">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.8rem; margin-top: 1rem;">
+                    <i data-lucide="upload"></i> Опубликовать на Nophin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно: Просмотр проекта -->
+    <div class="modal-overlay" id="view-modal">
+        <div class="modal" style="max-width: 750px;">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 1rem;">
+                    <div id="view-icon" class="card-icon">⚡</div>
+                    <div>
+                        <div class="modal-title" id="view-title">Название</div>
+                        <div style="color: var(--text-muted); font-size: 0.85rem;" id="view-author">Автор</div>
+                    </div>
+                </div>
+                <button class="close-btn" class="close-modal">&times;</button>
+            </div>
+            <p id="view-description" style="color: var(--text-main); line-height: 1.6; margin-bottom: 1.5rem;"></p>
+            <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;" id="view-meta">
+                <!-- Мета инфо -->
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; border-top: 1px solid var(--border-color);">
+                <div id="view-tags" class="card-tags"></div>
+                <button class="btn btn-primary" id="download-btn"><i data-lucide="download"></i> Скачать файл</button>
+            </div>
+        </div>
     </div>
 
     <!-- Футер -->
@@ -592,15 +704,351 @@
                 <i data-lucide="hexagons"></i>
                 <span>Nophin</span>
             </div>
-            <div class="footer-info">
-                © 2026 Nophin Platform. Все права защищены. Создано в фиолетовых тонах.
+            <div style="color: var(--text-muted); font-size: 0.9rem;">
+                © 2026 Nophin Platform. Моды, Сборки и Плагины.
             </div>
         </div>
     </footer>
 
-    <!-- Инициализация икон -->
     <script>
-        lucide.createIcons();
+        // Начальная база данных проектов
+        let initialProjects = [
+            {
+                id: 1,
+                title: "Aetheria Optimization",
+                author: "@modder_x",
+                type: "mod",
+                icon: "⚡",
+                description: "Комплексный мод для кардинального повышения FPS, оптимизации рендеринга чанков и снижения потребления оперативной памяти.",
+                downloads: 1250000,
+                likes: 45000,
+                loaders: ["Fabric", "NeoForge"],
+                versions: ["1.20.4", "1.20.1"],
+                tags: ["Оптимизация", "Утилиты"],
+                createdAt: new Date('2024-01-15')
+            },
+            {
+                id: 2,
+                title: "Astral Horizons",
+                author: "@CosmosTeam",
+                type: "modpack",
+                icon: "🌌",
+                description: "Исследуйте космос, стройте ракеты, открывайте планеты с собственной гравитацией, атмосферой и редкими ресурсами.",
+                downloads: 850000,
+                likes: 32000,
+                loaders: ["Fabric"],
+                versions: ["1.20.1"],
+                tags: ["Космос", "RPG"],
+                createdAt: new Date('2024-02-10')
+            },
+            {
+                id: 3,
+                title: "Medieval Combat Overhaul",
+                author: "@FantasyLab",
+                type: "mod",
+                icon: "⚔️",
+                description: "Полная переработка боевой системы: комбо-атаки, парирование, новые классы оружия, прокачка навыков и боссы.",
+                downloads: 540000,
+                likes: 19000,
+                loaders: ["Forge", "NeoForge"],
+                versions: ["1.19.2", "1.20.1"],
+                tags: ["RPG"],
+                createdAt: new Date('2024-03-01')
+            },
+            {
+                id: 4,
+                title: "Lush Biomes Redefined",
+                author: "@NatureDev",
+                type: "resourcepack",
+                icon: "🌿",
+                description: "Более 50+ живописных биомов с уникальной флорой, фауной, динамической погодой и звуковым эмбиентом.",
+                downloads: 2100000,
+                likes: 88000,
+                loaders: ["Fabric", "Forge", "Quilt"],
+                versions: ["1.20.4", "1.20.1", "1.19.2"],
+                tags: ["Биомы"],
+                createdAt: new Date('2023-11-20')
+            },
+            {
+                id: 5,
+                title: "Arcane Utilities & Spells",
+                author: "@Wizardry",
+                type: "mod",
+                icon: "🔮",
+                description: "Система древней магии, алхимические верстаки, ритуалы телепортации и магические артефакты.",
+                downloads: 320000,
+                likes: 14000,
+                loaders: ["Fabric"],
+                versions: ["1.20.4"],
+                tags: ["Магия", "Утилиты"],
+                createdAt: new Date('2024-03-12')
+            },
+            {
+                id: 6,
+                title: "FastPaper Core Engine",
+                author: "@ServerDevs",
+                type: "plugin",
+                icon: "⚙️",
+                description: "Высокопроизводительный плагин для оптимизации тикрейта (TPS) крупномасштабных публичных серверов.",
+                downloads: 940000,
+                likes: 27000,
+                loaders: ["Paper"],
+                versions: ["1.20.4", "1.20.1", "1.16.5", "1.12.2"],
+                tags: ["Оптимизация", "Утилиты"],
+                createdAt: new Date('2024-02-25')
+            }
+        ];
+
+        let state = {
+            projects: initialProjects,
+            searchQuery: "",
+            selectedType: "all",
+            selectedLoaders: [],
+            selectedVersions: [],
+            selectedTags: [],
+            sortBy: "downloads"
+        };
+
+        // Инициализация
+        document.addEventListener("DOMContentLoaded", () => {
+            renderProjects();
+            setupEventListeners();
+            lucide.createIcons();
+        });
+
+        // Функция форматирования чисел
+        function formatNumber(num) {
+            if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+            return num;
+        }
+
+        // Рендеринг списка проектов
+        function renderProjects() {
+            const container = document.getElementById("projects-list");
+            
+            // Фильтрация
+            let filtered = state.projects.filter(p => {
+                // Поиск
+                const matchesSearch = p.title.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+                                      p.description.toLowerCase().includes(state.searchQuery.toLowerCase()) ||
+                                      p.author.toLowerCase().includes(state.searchQuery.toLowerCase());
+
+                // Тип контента
+                const matchesType = state.selectedType === "all" || p.type === state.selectedType;
+
+                // Загрузчики
+                const matchesLoader = state.selectedLoaders.length === 0 || 
+                                      p.loaders.some(l => state.selectedLoaders.includes(l));
+
+                // Версии
+                const matchesVersion = state.selectedVersions.length === 0 || 
+                                       p.versions.some(v => state.selectedVersions.includes(v));
+
+                // Теги
+                const matchesTag = state.selectedTags.length === 0 || 
+                                   p.tags.some(t => state.selectedTags.includes(t));
+
+                return matchesSearch && matchesType && matchesLoader && matchesVersion && matchesTag;
+            });
+
+            // Сортировка
+            filtered.sort((a, b) => {
+                if (state.sortBy === "downloads") return b.downloads - a.downloads;
+                if (state.sortBy === "likes") return b.likes - a.likes;
+                if (state.sortBy === "newest") return b.createdAt - a.createdAt;
+            });
+
+            // Обновление счетчика
+            document.getElementById("results-count").innerText = `Найдено проектов: ${filtered.length}`;
+
+            // Очистка и отрисовка
+            container.innerHTML = "";
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i data-lucide="frown" size="48" style="margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <h3>Ничего не найдено</h3>
+                        <p style="margin-top: 0.5rem;">Попробуйте изменить параметры поиска или сбросить фильтры.</p>
+                    </div>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            filtered.forEach(p => {
+                const card = document.createElement("div");
+                card.className = "card";
+                card.onclick = () => openViewModal(p);
+
+                card.innerHTML = `
+                    <div class="card-icon">${p.icon}</div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <div>
+                                <span class="card-title">${p.title}</span>
+                                <span class="card-author">от ${p.author}</span>
+                            </div>
+                            <div class="card-stats">
+                                <span class="stat-item"><i data-lucide="download" size="16"></i> ${formatNumber(p.downloads)}</span>
+                                <span class="stat-item"><i data-lucide="heart" size="16"></i> ${formatNumber(p.likes)}</span>
+                            </div>
+                        </div>
+                        <p class="card-description">${p.description}</p>
+                        <div class="card-footer">
+                            <div class="card-tags">
+                                ${p.loaders.map(l => `<span class="tag">${l}</span>`).join('')}
+                                ${p.tags.map(t => `<span class="tag" style="background-color: var(--bg-card); color: var(--text-muted);">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        // Слушатели событий
+        function setupEventListeners() {
+            // Поиск
+            document.getElementById("search-input").addEventListener("input", (e) => {
+                state.searchQuery = e.target.value;
+                renderProjects();
+            });
+
+            // Логотип (сброс)
+            document.getElementById("logo-btn").onclick = () => {
+                resetAllFilters();
+            };
+
+            // Вкладки типов
+            document.querySelectorAll(".nav-tab").forEach(tab => {
+                tab.addEventListener("click", () => {
+                    document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+                    tab.classList.add("active");
+                    state.selectedType = tab.dataset.type;
+                    renderProjects();
+                });
+            });
+
+            // Чекбоксы фильтрации
+            const bindCheckboxes = (selector, stateKey) => {
+                document.querySelectorAll(selector).forEach(cb => {
+                    cb.addEventListener("change", () => {
+                        state[stateKey] = Array.from(document.querySelectorAll(`${selector}:checked`)).map(c => c.value);
+                        renderProjects();
+                    });
+                });
+            };
+
+            bindCheckboxes(".filter-loader", "selectedLoaders");
+            bindCheckboxes(".filter-version", "selectedVersions");
+            bindCheckboxes(".filter-tag", "selectedTags");
+
+            // Сброс фильтров
+            document.getElementById("reset-filters").onclick = () => resetAllFilters();
+
+            // Сортировка
+            document.getElementById("sort-select").addEventListener("change", (e) => {
+                state.sortBy = e.target.value;
+                renderProjects();
+            });
+
+            // Модальное окно создания
+            const createModal = document.getElementById("create-modal");
+            document.getElementById("open-create-modal").onclick = () => createModal.classList.add("active");
+            
+            // Закрытие модальных окон
+            document.querySelectorAll(".close-btn, .modal-overlay").forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    if (e.target === btn || e.target.classList.contains("modal-overlay")) {
+                        document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("active"));
+                    }
+                });
+            });
+
+            // Обработка отправки формы создания
+            document.getElementById("create-project-form").addEventListener("submit", (e) => {
+                e.preventDefault();
+
+                const title = document.getElementById("project-title").value;
+                const type = document.getElementById("project-type").value;
+                const icon = document.getElementById("project-icon").value || "📦";
+                const description = document.getElementById("project-description").value;
+                const tagsRaw = document.getElementById("project-tags").value;
+                
+                const loaders = Array.from(document.querySelectorAll('input[name="loaders"]:checked')).map(cb => cb.value);
+                const tags = tagsRaw ? tagsRaw.split(",").map(t => t.trim()) : ["Сообщество"];
+
+                const newProject = {
+                    id: Date.now(),
+                    title: title,
+                    author: "@you",
+                    type: type,
+                    icon: icon,
+                    description: description,
+                    downloads: 0,
+                    likes: 1,
+                    loaders: loaders.length > 0 ? loaders : ["Fabric"],
+                    versions: ["1.20.4"],
+                    tags: tags,
+                    createdAt: new Date()
+                };
+
+                state.projects.unshift(newProject);
+                createModal.classList.remove("active");
+                document.getElementById("create-project-form").reset();
+                renderProjects();
+                alert("Проект успешно опубликован!");
+            });
+
+            // Войти кнопка
+            document.getElementById("login-btn").onclick = () => {
+                alert("Функционал авторизации включен в демонстрационный режим.");
+            };
+        }
+
+        function resetAllFilters() {
+            state.searchQuery = "";
+            state.selectedType = "all";
+            state.selectedLoaders = [];
+            state.selectedVersions = [];
+            state.selectedTags = [];
+            
+            document.getElementById("search-input").value = "";
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+            document.querySelector('.nav-tab[data-type="all"]').classList.add("active");
+
+            renderProjects();
+        }
+
+        // Просмотр проекта
+        function openViewModal(project) {
+            document.getElementById("view-icon").innerText = project.icon;
+            document.getElementById("view-title").innerText = project.title;
+            document.getElementById("view-author").innerText = `Создатель ${project.author}`;
+            document.getElementById("view-description").innerText = project.description;
+
+            document.getElementById("view-meta").innerHTML = `
+                <div class="tag"><i data-lucide="download" size="14"></i> ${formatNumber(project.downloads)} скачиваний</div>
+                <div class="tag"><i data-lucide="heart" size="14"></i> ${formatNumber(project.likes)} лайков</div>
+                <div class="tag">Тип: ${project.type}</div>
+            `;
+
+            document.getElementById("view-tags").innerHTML = project.loaders.map(l => `<span class="tag">${l}</span>`).join('');
+
+            document.getElementById("download-btn").onclick = () => {
+                project.downloads++;
+                renderProjects();
+                alert(`Скачивание ${project.title} началось!`);
+            };
+
+            document.getElementById("view-modal").classList.add("active");
+            lucide.createIcons();
+        }
     </script>
 </body>
 </html>

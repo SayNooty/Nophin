@@ -1,0 +1,18 @@
+{
+  "latest": {
+    "release": "26.60",
+    "preview": "26.60.30"
+  },
+  "versions": [
+    {
+      "id": "26.60.30",
+      "type": "preview",
+      "releaseData": "2026-10-07"
+    },
+	{
+      "id": "26.60.29",
+      "type": "preview",
+      "releaseData": "2026-09-30"
+    }
+  ]
+}

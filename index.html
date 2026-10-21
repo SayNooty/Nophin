@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" data-theme="dark" data-filter-pos="left">
+<html lang="ru" data-theme="dark" data-style="basic" data-filter-pos="left">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -84,12 +84,13 @@ html[data-theme="oled"] .panel,
 html[data-theme="oled"] .card,
 html[data-theme="oled"] .p-card,
 html[data-theme="oled"] .settings-block{background-image:linear-gradient(180deg,#0a0b0d,#000)}
-/* OLED: полностью убираем остатки «жидкого стекла» — никаких размытий и стеклянных бликов */
-html[data-theme="oled"] *{
+/* OLED: полностью убираем остатки «жидкого стекла» — никаких размытий и стеклянных бликов.
+   Для стиля «Жидкое стекло» размытия остаются, поэтому правило действует только на базовый стиль. */
+html[data-theme="oled"][data-style="basic"] *{
   backdrop-filter:none !important;
   -webkit-backdrop-filter:none !important;
 }
-html[data-theme="oled"]{
+html[data-theme="oled"][data-style="basic"]{
   --surface-img:none;
   --surface-blur:none;
   --header-blur:none;
@@ -665,29 +666,31 @@ html[data-theme="light"] .input,html[data-theme="light"] .select,html[data-theme
 .games-nav{display:flex;align-items:center;gap:7px;flex:1;justify-content:center;flex-wrap:nowrap}
 .header_right{display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end}
 
-/* Кнопка игры (жидкое стекло) */
+/* Верхние кнопки разделов: без рамки блока.
+   При наведении текст увеличивается, появляется синяя прозрачная обводка,
+   а внутри кнопки — сплошная полупрозрачная синяя заливка. */
 .game-tab{position:relative}
 .game-btn{
   display:flex;align-items:center;gap:8px;
   padding:9px 13px;border-radius:13px;
-  border:1px solid var(--border);
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 52%,rgba(255,255,255,.05));
-  backdrop-filter:blur(16px) saturate(170%);
-  -webkit-backdrop-filter:blur(16px) saturate(170%);
+  border:0;background:transparent;
+  backdrop-filter:none;-webkit-backdrop-filter:none;
   color:var(--text);font-weight:600;font-size:13.5px;cursor:pointer;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.14), 0 8px 18px rgba(0,0,0,.2);
-  transition:transform .18s, border-color .2s, box-shadow .25s, background .25s;
+  box-shadow:none;
+  transition:transform .18s, box-shadow .25s ease, background-color .25s ease, color .2s ease;
   white-space:nowrap;
 }
 .game-btn:hover{
-  transform:translateY(-1px);
-  border-color:rgba(73,120,245,.5);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 12px 26px rgba(73,120,245,.28);
+  transform:none;
+  background:rgba(73,120,245,.24);
+  box-shadow:none;
 }
-.game-btn .g-logo{width:22px;height:22px;flex:none}
+.game-btn .g-name{display:inline-block;transform-origin:center;transition:transform .22s cubic-bezier(.2,.8,.3,1)}
+.game-btn:hover .g-name{transform:scale(1.13)}
+.game-btn .g-logo{width:22px;height:22px;flex:none;transition:transform .22s cubic-bezier(.2,.8,.3,1)}
+.game-btn:hover .g-logo{transform:scale(1.13)}
 .game-btn .caret{width:13px;height:13px;opacity:.6;transition:transform .22s}
-.game-tab.open .game-btn{border-color:rgba(73,120,245,.6);background:var(--glass-strong)}
+.game-tab.open .game-btn{background:rgba(73,120,245,.28);box-shadow:none}
 .game-tab.open .caret{transform:rotate(180deg)}
 
 /* Выпадающие меню */
@@ -759,10 +762,10 @@ html[data-theme="light"] .gmenu-sub{background:linear-gradient(180deg,rgba(255,2
   border:2px solid currentColor;border-top:0;border-left:0;transform:rotate(42deg);
 }
 .game-btn.active{
-  background-image:linear-gradient(180deg, rgba(255,255,255,.24), rgba(96,140,240,.55) 48%, rgba(52,92,214,.78)) !important;
-  border-color:rgba(159,196,255,.62) !important;
+  background:rgba(73,120,245,.3) !important;
+  background-image:none !important;
   color:#fff;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.34), 0 12px 26px rgba(45,90,200,.4) !important;
+  box-shadow:none !important;
 }
 .game-btn.active .g-logo{filter:drop-shadow(0 0 7px rgba(159,196,255,.7))}
 .game-tab.active .caret{opacity:1}
@@ -1043,6 +1046,41 @@ html[data-filter-pos="right"] .projects-layout{flex-direction:row-reverse}
 }
 .p-meta svg{width:12px;height:12px;color:var(--muted-2)}
 .p-meta i{font-style:normal;color:var(--text);font-weight:700}
+/* Отчёт о проверке файлов: найденные угрозы и нарушения */
+.sec-list{display:grid;gap:10px;margin-top:6px}
+.sec-item{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border-radius:13px;
+  background:var(--panel-2);border:1px solid var(--border)}
+.sec-item svg{width:18px;height:18px;flex:none;margin-top:2px;color:#f2a35c}
+.sec-item b{display:block;font-size:14px;margin-bottom:3px}
+.sec-item p{color:var(--muted);font-size:13px;line-height:1.55}
+.sec-item--danger{background:rgba(229,72,77,.12);border-color:rgba(229,72,77,.4)}
+.sec-item--danger svg{color:#ff8f92}
+/* Кнопка «Фильтры» для мобильной версии каталога утилит и лаунчеров */
+.tools-filter-toggle{display:none}
+/* Панель выбора способа использования (утилиты): сверху по центру, без рамки блока */
+.usage-panel{position:relative;display:flex;flex-wrap:wrap;gap:3px;padding:4px;border-radius:15px;
+  border:0;margin:0 auto 20px;justify-content:center;width:fit-content;max-width:100%;
+  background-image:none;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none}
+.usage-panel__pill{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:11px;pointer-events:none;opacity:0;z-index:0;
+  background-image:linear-gradient(180deg, rgba(255,255,255,.2), rgba(96,140,240,.9) 46%, rgba(52,92,214,.96));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.26);
+  transition:transform .34s cubic-bezier(.2,.8,.3,1), width .34s cubic-bezier(.2,.8,.3,1), opacity .2s ease}
+.usage-panel button{position:relative;z-index:1;display:inline-flex;align-items:center;gap:7px;
+  padding:9px 14px;border-radius:11px;font-size:13.5px;font-weight:600;color:var(--muted);
+  border:0;background:transparent;cursor:pointer;outline:none;white-space:nowrap;
+  transition:color .22s ease, transform .18s cubic-bezier(.2,.8,.3,1)}
+.usage-panel button:hover{color:var(--text);transform:translateY(-1px)}
+.usage-panel button.active{color:#fff}
+.usage-panel button svg{width:15px;height:15px;flex:none}
+.usage-panel:focus-within{outline:none}
+/* Значок модели доступа: платный ранний доступ или навсегда платное */.price-tag{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;
+  font-size:12px;font-weight:700;white-space:nowrap;
+  background:rgba(73,120,245,.16);border:1px solid rgba(73,120,245,.4);color:#9fc4ff;
+}
+.price-tag svg{width:14px;height:14px;flex:none}
+.price-tag--early{background:rgba(242,163,92,.14);border-color:rgba(242,163,92,.42);color:#f2a35c}
+.price-tag--paid{background:rgba(120,90,255,.16);border-color:rgba(120,90,255,.42);color:#bdb0ff}
 /* Лайки на карточке: компактно, без рамки и фона, красное сердце */
 .p-likes{
   display:inline-flex;align-items:center;gap:5px;padding:1px 2px;border:0;background:transparent;
@@ -1446,7 +1484,7 @@ a.news-item{text-decoration:none;color:inherit}
 .news-item p{color:var(--muted);font-size:13.8px}
 
 /* ---------- Жидкое стекло: все кнопки сайта ---------- */
-.btn, .oauth-btn, .game-btn, .profile__btn, .chip, .modal__close, .social, .segments button, .tabs button{
+.btn, .oauth-btn, .profile__btn, .chip, .modal__close, .social, .segments button, .tabs button{
   background-image:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02) 48%, rgba(255,255,255,.055));
   backdrop-filter:blur(18px) saturate(170%);
   -webkit-backdrop-filter:blur(18px) saturate(170%);
@@ -1460,12 +1498,12 @@ a.news-item{text-decoration:none;color:inherit}
   border-color:rgba(159,196,255,.45);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.24), 0 14px 28px rgba(45,90,200,.24);
 }
-.btn::before, .oauth-btn::before, .game-btn::before, .profile__btn::before{
+.btn::before, .oauth-btn::before, .profile__btn::before{
   content:""; position:absolute; top:-25%; bottom:-25%; left:-70%; width:45%;
   background:linear-gradient(100deg, transparent, rgba(255,255,255,.26), transparent);
   transform:skewX(-18deg); opacity:0; pointer-events:none;
 }
-.btn:hover::before, .oauth-btn:hover::before, .game-btn:hover::before, .profile__btn:hover::before{
+.btn:hover::before, .oauth-btn:hover::before, .profile__btn:hover::before{
   animation:btnShine .6s ease forwards;
 }
 @keyframes btnShine{
@@ -1757,9 +1795,15 @@ html[data-theme="light"] .dropdown{
   border-color:rgba(16,24,40,.14) !important;
   box-shadow:0 24px 52px rgba(31,45,71,.26), inset 0 1px 0 rgba(255,255,255,.9) !important;
 }
-.game-tab.open .game-btn, .profile.open .profile__btn{
+.profile.open .profile__btn{
   background-image:linear-gradient(180deg, rgba(255,255,255,.28), rgba(73,120,245,.38)) !important;
   border-color:rgba(159,196,255,.62) !important;
+}
+/* Верхние кнопки разделов: без рамки блока и в светлой теме */
+.game-tab.open .game-btn{
+  background:rgba(73,120,245,.22) !important;
+  background-image:none !important;
+  box-shadow:none !important;
 }
 .dropdown__item{color:var(--text)}
 .dropdown__item:hover{background:rgba(73,120,245,.24)}
@@ -1869,6 +1913,11 @@ html[data-theme="light"] .dropdown{
   .settings-nav button{white-space:nowrap;flex:none}
   .hero__title{font-size:clamp(24px,7vw,34px)}
   .p-card__desc{font-size:12.5px}
+  /* Каталог фильтров утилит и лаунчеров — одной кнопкой «Фильтры» */
+  .tools-filter-toggle{display:inline-flex;align-items:center;gap:8px;margin-left:auto}
+  .tools-filter-toggle__caret{width:14px;height:14px;transition:transform .22s ease}
+  .tools-filter-toggle.active .tools-filter-toggle__caret{transform:rotate(180deg)}
+  .filter-panel--collapsed{display:none}
 }
 @media (max-width:480px){
   .projects-grid{grid-template-columns:1fr}
@@ -1881,8 +1930,8 @@ html[data-theme="light"] .dropdown{
 }
 
 /* ============================================================
-   ОФОРМЛЕНИЕ: простой современный стиль (по умолчанию)
-   Жидкое стекло вынесено в отдельную тему html[data-theme="liquid"]
+   ОФОРМЛЕНИЕ: базовый стиль (по умолчанию)
+   «Жидкое стекло» — отдельный стиль html[data-style="liquid"]
    ============================================================ */
 :root{
   --btn-radius:12px;
@@ -1933,8 +1982,19 @@ html[data-theme="oled"]{
   --surface-shadow:none;
   --header-bg:#000000;
 }
-/* --- Тема «Жидкое стекло» --- */
-html[data-theme="liquid"]{
+/* --- Стиль сайта: «Жидкое стекло» (общие эффекты для любой цветовой темы) --- */
+html[data-style="liquid"]{
+  --surface-img:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.03) 48%, rgba(255,255,255,.08));
+  --surface-blur:blur(16px) saturate(170%);
+  --surface-shadow:inset 0 1px 0 rgba(255,255,255,.17), 0 14px 32px rgba(0,0,0,.32);
+  --primary-img:linear-gradient(180deg, rgba(255,255,255,.24), rgba(96,140,240,.5) 48%, rgba(52,92,214,.72));
+  --primary-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 12px 26px rgba(45,90,200,.34);
+  --open-img:linear-gradient(180deg, rgba(255,255,255,.28), rgba(73,120,245,.38));
+  --header-blur:blur(18px) saturate(170%);
+  --radius:20px;
+}
+/* Стекло + тёмная палитра */
+html[data-style="liquid"][data-theme="dark"]{
   --bg:#0e1117;
   --bg-deep:#0a0d12;
   --bg-list:rgba(255,255,255,.05);
@@ -1951,25 +2011,66 @@ html[data-theme="liquid"]{
   --btn-bg:rgba(255,255,255,.07);
   --btn-bg-hover:rgba(255,255,255,.13);
   --card-bg:rgba(255,255,255,.05);
-  --surface-img:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.03) 48%, rgba(255,255,255,.08));
-  --surface-blur:blur(16px) saturate(170%);
-  --surface-shadow:inset 0 1px 0 rgba(255,255,255,.17), 0 14px 32px rgba(0,0,0,.32);
-  --primary-img:linear-gradient(180deg, rgba(255,255,255,.24), rgba(96,140,240,.5) 48%, rgba(52,92,214,.72));
-  --primary-shadow:inset 0 1px 0 rgba(255,255,255,.3), 0 12px 26px rgba(45,90,200,.34);
-  --open-img:linear-gradient(180deg, rgba(255,255,255,.28), rgba(73,120,245,.38));
   --header-bg:rgba(14,17,23,.72);
-  --header-blur:blur(18px) saturate(170%);
-  --radius:20px;
 }
-html[data-theme="liquid"] body::before{
+/* Стекло + светлая палитра */
+html[data-style="liquid"][data-theme="light"]{
+  --bg-list:rgba(255,255,255,.55);
+  --bg-soft:rgba(255,255,255,.42);
+  --panel:rgba(255,255,255,.55);
+  --panel-2:rgba(255,255,255,.72);
+  --glass:rgba(255,255,255,.5);
+  --glass-strong:rgba(255,255,255,.72);
+  --border:rgba(16,24,40,.09);
+  --border-strong:rgba(16,24,40,.16);
+  --btn-bg:rgba(255,255,255,.6);
+  --btn-bg-hover:rgba(255,255,255,.82);
+  --card-bg:rgba(255,255,255,.5);
+  --header-bg:rgba(238,241,247,.72);
+  --surface-img:linear-gradient(180deg, rgba(255,255,255,.7), rgba(255,255,255,.3) 48%, rgba(255,255,255,.45));
+  --surface-shadow:inset 0 1px 0 rgba(255,255,255,.85), 0 14px 32px rgba(31,45,71,.14);
+  --primary-img:linear-gradient(180deg, rgba(255,255,255,.5), rgba(96,140,240,.55) 48%, rgba(52,92,214,.75));
+  --primary-shadow:inset 0 1px 0 rgba(255,255,255,.7), 0 12px 26px rgba(45,90,200,.26);
+  --open-img:linear-gradient(180deg, rgba(255,255,255,.6), rgba(73,120,245,.3));
+}
+/* Стекло + OLED-палитра */
+html[data-style="liquid"][data-theme="oled"]{
+  --bg-list:rgba(255,255,255,.045);
+  --bg-soft:rgba(255,255,255,.03);
+  --panel:rgba(255,255,255,.05);
+  --panel-2:rgba(255,255,255,.075);
+  --glass:rgba(255,255,255,.06);
+  --glass-strong:rgba(255,255,255,.1);
+  --border:rgba(255,255,255,.09);
+  --border-strong:rgba(255,255,255,.16);
+  --btn-bg:rgba(255,255,255,.06);
+  --btn-bg-hover:rgba(255,255,255,.12);
+  --card-bg:rgba(255,255,255,.045);
+  --header-bg:rgba(0,0,0,.8);
+}
+html[data-style="liquid"][data-theme="dark"] body::before{
   background-color:#0e1117;
   background-image:
     radial-gradient(1200px 620px at 10% -12%, rgba(73,120,245,.3), transparent 62%),
     radial-gradient(900px 520px at 92% -6%, rgba(140,90,220,.24), transparent 64%),
     radial-gradient(760px 460px at 50% 108%, rgba(73,120,245,.16), transparent 66%);
 }
+html[data-style="liquid"][data-theme="light"] body::before{
+  background-color:#eef1f7;
+  background-image:
+    radial-gradient(1200px 620px at 10% -12%, rgba(73,120,245,.16), transparent 62%),
+    radial-gradient(900px 520px at 92% -6%, rgba(140,90,220,.13), transparent 64%),
+    radial-gradient(760px 460px at 50% 108%, rgba(73,120,245,.1), transparent 66%);
+}
+html[data-style="liquid"][data-theme="oled"] body::before{
+  background-color:#000;
+  background-image:
+    radial-gradient(1200px 620px at 10% -12%, rgba(73,120,245,.22), transparent 62%),
+    radial-gradient(900px 520px at 92% -6%, rgba(140,90,220,.16), transparent 64%),
+    radial-gradient(760px 460px at 50% 108%, rgba(73,120,245,.12), transparent 66%);
+}
 /* --- Кнопки: одинаковая форма и скругление во всех темах --- */
-.btn,.game-btn,.profile__btn,.cselect__btn,.segments button,.content-tab,.view-btn,.page-btn,
+.btn,.profile__btn,.cselect__btn,.segments button,.content-tab,.view-btn,.page-btn,
 .tabs button,.icon-btn,.link-row,.filter-card__head,.md-toolbar .btn--sm,.upload-zone,.pager button{
   background-color:var(--btn-bg);
   background-image:var(--surface-img);
@@ -1980,7 +2081,7 @@ html[data-theme="liquid"] body::before{
   border:1px solid var(--border-strong);
   transition:background-color .16s ease, border-color .16s ease, color .16s ease, transform .12s ease;
 }
-.btn:hover,.game-btn:hover,.profile__btn:hover,.cselect__btn:hover,.segments button:hover,
+.btn:hover,.profile__btn:hover,.cselect__btn:hover,.segments button:hover,
 .content-tab:hover,.view-btn:hover,.page-btn:hover,.tabs button:hover,.icon-btn:hover,.link-row:hover,
 .filter-card__head:hover,.pager button:hover{background-color:var(--btn-bg-hover);border-color:rgba(159,196,255,.42)}
 .btn--primary{background-color:var(--accent);background-image:var(--primary-img);box-shadow:var(--primary-shadow);border-color:transparent}
@@ -2019,16 +2120,22 @@ html[data-theme="liquid"] body::before{
 }
 html[data-theme="light"] .dropdown{background-color:#ffffff !important;background-image:none !important}
 .modal__box{border-radius:22px;background-color:var(--card-bg);background-image:var(--surface-img)}
-.game-tab.open .game-btn,.profile.open .profile__btn{
+.game-tab.open .profile__btn{
   background-color:var(--btn-bg-hover) !important;
   background-image:var(--open-img) !important;
   border-color:rgba(159,196,255,.5) !important;
 }
+/* Верхние кнопки разделов: свой вид во всех темах — без рамки, с синей заливкой */
+.game-tab.open .game-btn{
+  background:rgba(73,120,245,.28) !important;
+  background-image:none !important;
+  box-shadow:none !important;
+}
 .game-btn.active{
-  background-color:var(--accent) !important;
-  background-image:var(--primary-img) !important;
+  background:rgba(73,120,245,.3) !important;
+  background-image:none !important;
   border-color:transparent !important;
-  box-shadow:var(--primary-shadow) !important;
+  box-shadow:none !important;
   color:#fff;
 }
 .like-btn.liked{
@@ -2375,6 +2482,43 @@ const TOOL_OS = ['Windows','macOS','Linux','Android','Web'];
 /* Только для Лаунчеров: тип запуска и синхронизация прогресса */
 const LAUNCHER_TYPES = ['Ванильный','Модовый','Серверный','Мобильный'];
 const LAUNCHER_SYNC = ['Облачная','Локальная','Без синхронизации'];
+/* Модели доступа к программе: бесплатно, платный ранний доступ или навсегда платное */
+const PRICING_MODELS = [
+  {id:'free', label:'Бесплатно', hint:'Программа доступна всем бесплатно.'},
+  {id:'early', label:'Платный ранний доступ', hint:'Пока программа в раннем доступе, её можно купить по сниженной цене. Цена действует только до выхода стабильной версии.'},
+  {id:'paid', label:'Навсегда платным', hint:'Программа платная: разовая покупка навсегда, все будущие версии включены.'}
+];
+const PRICE_CURRENCY = '₽';
+/* Индекс цен: общий множитель для всех платных программ.
+   Позволяет менять стоимость разом — например, когда меняется экономическая ситуация. */
+function priceIndex(){
+  const v = Number(DB.settings.priceIndex);
+  if(!isFinite(v) || v <= 0) return 1;
+  return Math.max(0.25, Math.min(4, v));
+}
+/* Итоговая цена с учётом индекса */
+function effectivePrice(p, kind){
+  if(!p) return 0;
+  const base = Number(kind === 'early' ? p.priceEarly : p.pricePaid);
+  if(!isFinite(base) || base <= 0) return 0;
+  return Math.round(base * priceIndex());
+}
+/* Подпись модели доступа с ценой — для карточек и страницы программы */
+function pricingLabel(p){
+  if(!p || !p.pricing || p.pricing === 'free') return '';
+  if(p.pricing === 'early'){
+    const pr = effectivePrice(p, 'early');
+    return pr > 0 ? ('Ранний доступ · ' + pr + ' ' + PRICE_CURRENCY) : 'Ранний доступ';
+  }
+  const pr = effectivePrice(p, 'paid');
+  return pr > 0 ? ('Навсегда · ' + pr + ' ' + PRICE_CURRENCY) : 'Навсегда платно';
+}
+/* Есть ли у пользователя покупка этой программы */
+function hasPurchased(p, u){
+  if(!p || !u) return false;
+  const list = u.purchases || [];
+  return list.some(function(x){ return x && x.projectId === p.id; });
+}
 /* Значки операционных систем и способов использования — для фильтров */
 const OS_ICONS = {
   'Windows':'osWindows', 'macOS':'osApple', 'Linux':'osLinux', 'Android':'osAndroid', 'Web':'osWeb'
@@ -2864,7 +3008,7 @@ const LS = {
   reports:'nophin.reports.v1',
   orgs:'nophin.orgs.v1'
 };
-const DEFAULT_SETTINGS = { theme:'dark', lang:'ru', filterPos:'left', cardView:'cards', dateFormat:'dmy', themeSync:false, perPage:20, avatarRadius:22, profileAvatarRadius:22, collapsedFilters:['license','exceptions'] };
+const DEFAULT_SETTINGS = { theme:'dark', siteStyle:'basic', lang:'ru', filterPos:'left', cardView:'cards', dateFormat:'dmy', themeSync:false, perPage:20, avatarRadius:22, profileAvatarRadius:22, priceIndex:1, collapsedFilters:['license','exceptions'] };
 const FILTER_BLOCKS = [
   ['version','Версия игры'],['loaders','Загрузчик'],['category','Категория'],['env','Среда'],
   ['deps','Содержит контент'],['license','Лицензия'],['exceptions','Особые исключения'],
@@ -3133,7 +3277,11 @@ function applyTheme(){
   if(mode === 'system'){
     theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
   }
+  if(theme !== 'dark' && theme !== 'light' && theme !== 'oled') theme = 'dark';
   document.documentElement.setAttribute('data-theme', theme);
+  /* Стиль сайта: базовый или «Жидкое стекло» — отдельная настройка от цветовой темы */
+  const style = DB.settings.siteStyle === 'liquid' ? 'liquid' : 'basic';
+  document.documentElement.setAttribute('data-style', style);
   document.documentElement.setAttribute('data-filter-pos', DB.settings.filterPos);
   document.documentElement.setAttribute('data-cardview', DB.settings.cardView || 'cards');
   /* Ползунок скругления аватарки: 0 — квадрат, 50 — круг */
@@ -3422,7 +3570,9 @@ function renderGamesNav(){
     '<a class="game-btn" href="#/utilities" data-navpage="utilities">' + icon('utility') +
       '<span class="g-name">Утилиты</span></a>' +
     '<a class="game-btn" href="#/launchers" data-navpage="launchers">' + icon('box') +
-      '<span class="g-name">Лаунчеры</span></a>';
+      '<span class="g-name">Лаунчеры</span></a>' +
+    '<a class="game-btn" href="#/news" data-navpage="news">' + icon('news') +
+      '<span class="g-name">Новости</span></a>';
 
   const tab = nav.querySelector('.game-tab');
   if(!tab) return;
@@ -4780,6 +4930,8 @@ function toolCard(p){
         '</div>' +
       '</div>' +
       (showStatus ? '<div class="cats"><span class="status-pill ' + st.cls + '">' + esc(st.label) + '</span></div>' : '') +
+      (pricingLabel(p) ? '<div class="cats"><span class="price-tag price-tag--' + esc(p.pricing) + '">' +
+        icon(p.pricing === 'early' ? 'clock' : 'wallet') + esc(pricingLabel(p)) + '</span></div>' : '') +
       '<p class="p-card__desc">' + esc(p.summary || 'Описание пока не заполнено.') + '</p>' +
       '<div class="p-card__stats">' +
         dlMeta(p, dlTitle) +
@@ -4973,6 +5125,26 @@ function bindHome(root){
    11. НОВОСТИ, ПОИСК, ИГРЫ, ПРАВОВЫЕ СТРАНИЦЫ
    ============================================================ */
 const NEWS = [
+  {id:'early-access', d:'2026-10-19', cat:'Функции', t:'Платный ранний доступ для утилит и лаунчеров',
+   lead:'Авторы программ могут публиковать их в платном раннем доступе или сделать платными навсегда.',
+   body:[
+     'У каждой утилиты и лаунчера теперь есть модель доступа: бесплатно, платный ранний доступ или покупка навсегда. В режиме раннего доступа цена действует, пока программа не вышла из стабильной версии, — так автор получает первые покупки, а пользователь — доступ по сниженной цене.',
+     'Цену задаёт сам автор, но общий индекс цен в настройках позволяет пересчитать стоимость всех платных программ разом. Это нужно, когда меняется экономическая ситуация: достаточно сдвинуть ползунок, и цены обновятся на всех карточках и страницах.',
+     'Купленная программа навсегда остаётся в библиотеке пользователя: все текущие и будущие версии доступны без повторной оплаты.'
+   ]},
+  {id:'malware-scan', d:'2026-10-15', cat:'Правила', t:'Обязательная проверка программ на вредоносное ПО',
+   lead:'Перед публикацией утилиты и лаунчера проходят тщательную проверку файлов, ссылок и описания.',
+   body:[
+     'Проверка ищет признаки вредоносного содержимого: файлы с именами стилера, кейлоггера или майнера, обфусцированные полезные нагрузки, ссылки на сырые IP-адреса и подозрительные сервисы раздачи, а также опасные команды в описании.',
+     'Если угрозы найдены, проект удаляется с площадки сразу и без возможности восстановления, а автор получает уведомление с подробным разбором находок.',
+     'Если же найдено лишь нарушение правил — например, не указаны поддерживаемые ОС или слишком короткое описание, — проект остаётся, но автору предлагают исправить его и отправить снова.'
+   ]},
+  {id:'news-section', d:'2026-10-10', cat:'Разделы', t:'Раздел «Новости» и кнопка в шапке',
+   lead:'В шапке сайта появилась кнопка «Новости» — все изменения площадки собраны в одном месте.',
+   body:[
+     'Кнопка «Новости» в верхнем меню ведёт на страницу с обновлениями платформы: новые функции, изменения цен, правила публикации и объявления по безопасности.',
+     'Каждая новость — отдельная статья с подробным разбором изменений, чтобы можно было прочитать детали, не перебирая все остальные разделы.'
+   ]},
   {id:'catalog-refresh', d:'2026-02-18', cat:'Разделы', t:'Каталог сфокусирован на играх серии Minecraft',
    lead:'Из каталога убраны лишние разделы: теперь Nophin собирает контент только для игр Minecraft и утилит разработки.',
    body:[
@@ -5120,6 +5292,8 @@ function toolFiltersCount(){
     TOOL_FILTERS.ltypes.length + TOOL_FILTERS.syncs.length + TOOL_FILTERS.lic.length + TOOL_FILTERS.exc.length;
 }
 function toolFiltersActive(){ return toolFiltersCount() > 0; }
+/* На мобильных панель фильтров свёрнута за одной кнопкой «Фильтры» */
+let TOOL_FILTERS_OPEN = false;
 function toolFilterPanelHtml(kind){
   const rows = function(group, values, store){
     return values.map(function(v){
@@ -5132,13 +5306,12 @@ function toolFilterPanelHtml(kind){
   const typeRows = rows('tType', LAUNCHER_TYPES, TOOL_FILTERS.ltypes);
   const syncRows = rows('tSync', LAUNCHER_SYNC, TOOL_FILTERS.syncs);
   const active = toolFiltersActive();
-  let html = '<aside class="filter-panel" style="width:100%;max-width:280px">' +
+  let html = '<aside class="filter-panel' + (TOOL_FILTERS_OPEN ? '' : ' filter-panel--collapsed') + '" style="width:100%;max-width:280px">' +
     '<div class="filter-panel__head"><h3>' + icon('filter') + 'Фильтры' +
       (active ? ' <span class="cat-tag">' + toolFiltersCount() + '</span>' : '') + '</h3>' +
       '<button class="btn btn--sm" id="toolReset" type="button">' + icon('close') + 'Сбросить</button></div>';
   if(kind === 'utilities'){
-    html += filterCard('Способ использования', TOOL_FILTERS.usage.length || null,
-      usageRows, 'toolUsage', 'monitor', 'toolusage');
+    /* Способ использования вынесен в панель выбора сверху по центру */
     html += filterCard('Операционная система', TOOL_FILTERS.os.length || null,
       osRows, 'toolOs', 'globe', 'toolos');
   } else {
@@ -5184,6 +5357,23 @@ function filterToolItems(items, kind){
     return true;
   });
 }
+/* Панель выбора способа использования для утилит: сверху по центру */
+const USAGE_PANEL_ITEMS = ['Десктоп','WEB','Консоль','Мобильное','Плагин сервера'];
+const USAGE_PANEL_ICONS = {
+  'Десктоп':'monitor', 'WEB':'osWeb', 'Консоль':'osConsole', 'Мобильное':'phone', 'Плагин сервера':'plugin'
+};
+function usagePanelHtml(){
+  const sel = TOOL_FILTERS.usage;
+  return '<div class="usage-panel" role="group" aria-label="Способ использования">' +
+    '<span class="usage-panel__pill" aria-hidden="true"></span>' +
+    '<button type="button" data-usage=""' + (sel.length ? '' : ' class="active"') + '>' + icon('layers') + 'Все</button>' +
+    USAGE_PANEL_ITEMS.map(function(u){
+      return '<button type="button" data-usage="' + esc(u) + '"' +
+        (sel.indexOf(u) !== -1 ? ' class="active"' : '') + '>' +
+        icon(USAGE_PANEL_ICONS[u] || 'monitor') + esc(u) + '</button>';
+    }).join('') +
+  '</div>';
+}
 /* Утилиты и лаунчеры: программы для создания контента, которые публикуют пользователи */
 function renderToolsPage(kind){
   const meta = {
@@ -5215,11 +5405,15 @@ function renderToolsPage(kind){
         '<p style="color:var(--muted);font-size:13.4px;margin-top:6px">Проект отправляется на модерацию: проверяется описание, ссылки и файлы. ' +
         'В описании укажите, для какой игры и какой контент создаётся программа, поддерживаемые ОС и системные требования.</p></div>' +
     '</div>' +
+    (kind === 'utilities' ? usagePanelHtml() : '') +
     '<div class="projects-layout">' +
       toolFilterPanelHtml(kind) +
       '<div class="projects-main">' +
         '<div class="projects-toolbar" style="margin-bottom:16px">' +
           '<span class="projects-count">' + items.length + ' из ' + all.length + '</span>' +
+          '<button class="btn btn--sm tools-filter-toggle' + (TOOL_FILTERS_OPEN ? ' active' : '') + '" id="toolFiltersToggle" type="button">' +
+            icon('filter') + 'Фильтры' + (toolFiltersActive() ? ' <span class="cat-tag">' + toolFiltersCount() + '</span>' : '') +
+            icon('chevron','tools-filter-toggle__caret') + '</button>' +
         '</div>' +
         (items.length
           ? '<div class="projects-grid tools-grid" id="toolsGrid">' + items.map(toolCard).join('') + '</div>'
@@ -5230,6 +5424,7 @@ function renderToolsPage(kind){
 function bindToolsPage(root){
   bindProjectCards(root);
   bindPreviewLists(root);
+  syncSegPills(root);
   root.querySelectorAll('[data-act="create-tool"]').forEach(function(b){
     b.addEventListener('click', function(){
       openCreateProject({game:'tools', cat:b.getAttribute('data-kind')});
@@ -5258,6 +5453,26 @@ function bindToolsPage(root){
   if(reset) reset.addEventListener('click', function(){
     TOOL_FILTERS = {usage:[], games:[], os:[], ltypes:[], syncs:[], lic:[], exc:[], q:''};
     redraw();
+  });
+  /* На мобильных фильтры открываются одной кнопкой */
+  const filterToggle = root.querySelector('#toolFiltersToggle');
+  if(filterToggle) filterToggle.addEventListener('click', function(){
+    TOOL_FILTERS_OPEN = !TOOL_FILTERS_OPEN;
+    redraw();
+  });
+  /* Панель выбора способа использования (утилиты) */
+  root.querySelectorAll('.usage-panel button[data-usage]').forEach(function(b){
+    b.addEventListener('click', function(){
+      const v = b.getAttribute('data-usage');
+      if(!v){
+        TOOL_FILTERS.usage = [];
+      } else {
+        const i = TOOL_FILTERS.usage.indexOf(v);
+        if(i === -1) TOOL_FILTERS.usage.push(v);
+        else TOOL_FILTERS.usage.splice(i, 1);
+      }
+      redraw();
+    });
   });
   root.querySelectorAll('.filter-card__head').forEach(function(btn){
     btn.addEventListener('click', function(){ btn.parentElement.classList.toggle('collapsed'); });
@@ -7200,16 +7415,17 @@ const SEG_PILL_MEM = {};
 /* Имя кнопки в переключателе: адрес, значение или её текст */
 function segBtnId(btn){
   if(!btn) return '';
-  return btn.getAttribute('href') || btn.getAttribute('data-view') || btn.getAttribute('data-filter') || btn.textContent.trim();
+  return btn.getAttribute('href') || btn.getAttribute('data-view') || btn.getAttribute('data-usage') ||
+    btn.getAttribute('data-filter') || btn.textContent.trim();
 }
 /* Подпись блока — набор его кнопок. У разных страниц она разная, поэтому индикатор
    не пытается «приехать» между несвязанными переключателями */
 function segBoxId(box){
-  return Array.prototype.slice.call(box.querySelectorAll('.content-tab, .view-btn, .segments--pill button'))
+  return Array.prototype.slice.call(box.querySelectorAll('.content-tab, .view-btn, .segments--pill button, .usage-panel button'))
     .map(segBtnId).join('|');
 }
 function segPillPos(box, pill, instant){
-  const active = box.querySelector('.content-tab.active, .view-btn.active, .segments--pill button.active');
+  const active = box.querySelector('.content-tab.active, .view-btn.active, .segments--pill button.active, .usage-panel button.active');
   if(!active){ pill.style.opacity = 0; return; }
   if(instant){
     /* первое появление — без анимации, чтобы индикатор не «вырастал» из нуля */
@@ -7226,17 +7442,17 @@ function segPillPos(box, pill, instant){
   pill.style.transform = 'translateX(' + active.offsetLeft + 'px)';
 }
 function syncSegPills(root){
-  const boxes = Array.prototype.slice.call(root.querySelectorAll('.content-tabs, .view-switch, .segments--pill'));
+  const boxes = Array.prototype.slice.call(root.querySelectorAll('.content-tabs, .view-switch, .segments--pill, .usage-panel'));
   boxes.forEach(function(box){
-    const pill = box.querySelector('.content-tabs__pill, .view-switch__pill, .segments__pill');
+    const pill = box.querySelector('.content-tabs__pill, .view-switch__pill, .segments__pill, .usage-panel__pill');
     if(!pill) return;
-    const active = box.querySelector('.content-tab.active, .view-btn.active, .segments--pill button.active');
+    const active = box.querySelector('.content-tab.active, .view-btn.active, .segments--pill button.active, .usage-panel button.active');
     const boxId = segBoxId(box);
     const prev = SEG_PILL_MEM[boxId];
     let from = null;
     if(prev && active && prev.activeId !== segBtnId(active)){
       /* ищем в текущем блоке ту кнопку, на которой индикатор стоял в прошлый раз */
-      const btns = Array.prototype.slice.call(box.querySelectorAll('.content-tab, .view-btn, .segments--pill button'));
+      const btns = Array.prototype.slice.call(box.querySelectorAll('.content-tab, .view-btn, .segments--pill button, .usage-panel button'));
       from = btns.filter(function(b){ return segBtnId(b) === prev.activeId; })[0] || null;
     }
     if(from){
@@ -7257,8 +7473,8 @@ function syncSegPills(root){
 }
 /* Один обработчик на всё окно: индикаторы следят за изменением ширины */
 window.addEventListener('resize', function(){
-  document.querySelectorAll('.content-tabs, .view-switch, .segments--pill').forEach(function(box){
-    const pill = box.querySelector('.content-tabs__pill, .view-switch__pill, .segments__pill');
+  document.querySelectorAll('.content-tabs, .view-switch, .segments--pill, .usage-panel').forEach(function(box){
+    const pill = box.querySelector('.content-tabs__pill, .view-switch__pill, .segments__pill, .usage-panel__pill');
     if(pill) segPillPos(box, pill);
   });
 });
@@ -8822,6 +9038,8 @@ function renderProjectView(id){
         '<div class="project-head__sub">' +
           '<span class="cat-tag game-chip">' + GAME_LOGOS[game.logo] + esc(game.nav) + ' · ' + esc(cm.plural) + '</span>' +
           devStatusBadgeHtml(p) +
+          (pricingLabel(p) ? '<span class="price-tag price-tag--' + esc(p.pricing) + '">' +
+            icon(p.pricing === 'early' ? 'clock' : 'wallet') + esc(pricingLabel(p)) + '</span>' : '') +
           '<span>' + authorLink(p) + '</span><span>·</span>' +
           '<span>' + icon('download','') + ' <span class="dl-num" data-dlcount="' + esc(p.id) + '">' + fmtNum(p.downloads) + '</span></span>' +
           '<span>' + icon('heart','') + ' ' + fmtNum(p.likes || 0) + '</span>' +
@@ -8829,6 +9047,11 @@ function renderProjectView(id){
           '<span>обн. ' + fmtDate(p.updatedAt) + '</span>' +
         '</div>' +
         '<div class="project-head__actions">' +
+          (pricingLabel(p) && !owner
+            ? '<button class="btn btn--lg' + (hasPurchased(p, u) ? '' : ' btn--primary') + '" id="buyBtn" type="button">' +
+                icon(hasPurchased(p, u) ? 'check' : 'wallet') +
+                (hasPurchased(p, u) ? 'Куплено' : 'Купить · ' + pricingLabel(p).split('· ').pop()) + '</button>'
+            : '') +
           '<button class="btn btn--sm btn--primary btn--icon" id="downloadBtn" title="Скачать проект' +
             (files[0] ? ' (' + esc(files[0].size || '') + ')' : '') + '">' + icon('download') + '</button>' +
           '<button class="btn btn--sm btn--icon like-btn' + (liked ? ' liked' : '') + '" id="likeBtn" title="' +
@@ -8903,6 +9126,31 @@ function bindProjectView(root, id){
   }
   const dl = root.querySelector('#downloadBtn');
   if(dl) dl.addEventListener('click', function(){ openDownloadDialog(p); });
+  /* Покупка платной программы */
+  const buyBtn = root.querySelector('#buyBtn');
+  if(buyBtn) buyBtn.addEventListener('click', function(){
+    const me = currentUser();
+    if(!me){
+      toast('warn','Нужен аккаунт', 'Войдите, чтобы купить программу.');
+      location.hash = '#/login';
+      return;
+    }
+    if(hasPurchased(p, me)){ toast('info','Уже куплено', 'Программа уже в вашей библиотеке.'); return; }
+    const price = effectivePrice(p, p.pricing === 'early' ? 'early' : 'paid');
+    const kind = p.pricing === 'early' ? 'Ранний доступ' : 'Навсегда';
+    me.purchases = me.purchases || [];
+    me.purchases.push({
+      projectId: p.id,
+      kind: p.pricing,
+      price: price,
+      at: new Date().toISOString()
+    });
+    saveUsers();
+    notify(me.id, 'Покупка оформлена: ' + p.title + ' (' + kind + ')', 'ok', '#/project/' + p.id);
+    toast('ok','Покупка оформлена',
+      '«' + p.title + '» — ' + kind + ' за ' + price + ' ' + PRICE_CURRENCY + '. Файлы доступны в разделе «Версии и файлы».');
+    route(true);
+  });
   root.querySelectorAll('[data-dl]').forEach(function(b){
     b.addEventListener('click', function(e){
       e.stopPropagation();
@@ -9093,12 +9341,179 @@ function findPlagiarism(project){
   });
   return (best && best.score >= PLAGIARISM_LIMIT) ? best : null;
 }
+/* ============================================================
+   ПРОВЕРКА УТИЛИТ И ЛАУНЧЕРОВ НА ВРЕДОНОСНОЕ СОДЕРЖИМОЕ
+   Перед публикацией программа проходит тщательную проверку:
+   при обнаружении угроз проект удаляется сразу, при нарушении
+   правил автору предлагают исправить проект и отправить снова.
+   ============================================================ */
+/* Имена файлов, указывающие на вредоносное назначение */
+const MALWARE_NAME_RE = /(stealer|keylog|infosteal|grabber|botnet|ransom|cryptominer|coinminer|webinjector|rat_|_rat\b|троян|стилер|кейлоггер|майнер)/i;
+/* Служебные адреса, с которых часто раздают вредоносные сборки */
+const SUSPICIOUS_HOST_RE = /(pastebin\.com\/raw|paste\.ee\/|ngrok\.io|ngrok-free|trycloudflare\.com|discord(app)?\.com\/api\/webhooks|bit\.ly\/[a-z0-9]{3,}\?|transfer\.sh\/|anonfiles\.com)/i;
+/* Ссылки на raw-IP: программу нельзя скачать с «непонятного адреса» */
+const IP_URL_RE = /https?:\/\/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/i;
+/* Обфусцированная полезная нагрузка */
+const BASE64_BLOB_RE = /[A-Za-z0-9+/]{140,}={0,2}/;
+/* Опасные команды в описании */
+const DANGEROUS_CMD_RE = /(powershell[^\n]{0,40}-e(nc(odedcommand)?)?\s+[A-Za-z0-9+/=]{24,}|certutil\s+-urlcache|invoke-webrrequest[^\n]{0,90}\biex\b|curl[^\n]{0,70}\|\s*(ba)?sh\b|rundll32\s+javascript:|reg\s+add[^\n]{0,70}\\run\b|mshta\s+https?:)/i;
+/* Прямые признаки взлома и нелицензионного ПО */
+const CRACK_RE = /(кряк|взлом(ать|а|ы|ом)?\s+(аккаунт|парол|игр)|steam\s*(stealer|взлом)|кейлоггер|майнер\s*для|вредоносн|чит[ыо]-?клик|крякнутый)/i;
+/* Собираем все ссылки проекта в один текст */
+function projectLinkTexts(p){
+  const out = [];
+  if(p.sourceUrl) out.push(String(p.sourceUrl));
+  const links = p.links || {};
+  Object.keys(links).forEach(function(k){ if(links[k]) out.push(String(links[k])); });
+  return out;
+}
+/* Проверка программы. Возвращает вердикт и списки находок. */
+function scanProgramProject(p){
+  const threats = [];
+  const violations = [];
+  const files = p.files || [];
+  const fileNames = files.map(function(f){ return String(f.name || ''); });
+  const body = [p.title, p.summary, p.body].join('\n');
+  const links = projectLinkTexts(p);
+
+  /* --- Угрозы: проект удаляется немедленно --- */
+  fileNames.forEach(function(name){
+    if(MALWARE_NAME_RE.test(name)){
+      threats.push({title:'Файл с вредоносным назначением', detail:'Имя файла «' + name + '» указывает на вредоносное содержимое (стилер, кейлоггер, майнер и подобное).'});
+    }
+    if(BASE64_BLOB_RE.test(name)){
+      threats.push({title:'Обфусцированное имя файла', detail:'Имя файла «' + name.slice(0, 48) + '…» содержит закодированную полезную нагрузку.'});
+    }
+  });
+  links.forEach(function(url){
+    if(SUSPICIOUS_HOST_RE.test(url)){
+      threats.push({title:'Опасная ссылка на раздачу', detail:'Адрес «' + url + '» ведёт на сервис, с которого часто распространяют вредоносные сборки.'});
+    }
+    if(IP_URL_RE.test(url)){
+      threats.push({title:'Ссылка на числовой IP-адрес', detail:'Адрес «' + url + '» указывает на прямой IP — так часто маскируют серверы с вредоносным содержимым.'});
+    }
+  });
+  if(DANGEROUS_CMD_RE.test(body)){
+    threats.push({title:'Опасная команда в описании', detail:'В описании найдена команда, выполняющая код из сети без проверки. Программы с такими командами публикуются только после ручного разбора.'});
+  }
+  if(CRACK_RE.test(body)){
+    threats.push({title:'Признаки взлома и нелицензионного ПО', detail:'Описание содержит упоминания взлома, кейлоггеров, майнеров или кряков. Такие программы не публикуются.'});
+  }
+
+  /* --- Нарушения правил: автору предлагают исправить --- */
+  if(!files.length){
+    violations.push({title:'Нет прикреплённых файлов', detail:'Прикрепите хотя бы один файл программы — без него проект не пройдёт проверку.'});
+  }
+  const desc = String(p.summary || '').trim();
+  if(desc.length < 40){
+    violations.push({title:'Слишком короткое описание', detail:'Опишите, что делает программа, для какой игры и какие задачи решает (минимум 40 символов).'});
+  }
+  if(!(p.os && p.os.length)){
+    violations.push({title:'Не указаны поддерживаемые ОС', detail:'Отметьте операционные системы, на которых программа работает.'});
+  }
+  if(!p.usage){
+    violations.push({title:'Не указан способ использования', detail:'Выберите, как запускается программа: сайт, приложение для ПК, консоль, мобильное приложение или плагин сервера.'});
+  }
+  if(!p.sourceUrl && !links.length){
+    violations.push({title:'Нет ссылки на источник', detail:'Укажите ссылку на сайт, репозиторий или страницу программы — так пользователи смогут проверить её до запуска.'});
+  }
+  if(!p.icon){
+    violations.push({title:'Нет иконки программы', detail:'Загрузите иконку: без неё программа почти не заметна в каталоге.'});
+  }
+  if(/(@[A-Za-z0-9_]{5,}|t\.me\/[A-Za-z0-9_]+|@[A-Za-z0-9_]+\.[A-Za-z]{2,}|[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})/.test(String(p.body || ''))){
+    violations.push({title:'Контакт вне площадки', detail:'Уберите внешние контакты из описания — обсуждайте программы на сайте, это безопаснее для всех.'});
+  }
+
+  const verdict = threats.length ? 'malware' : (violations.length ? 'violation' : 'clean');
+  return {verdict:verdict, threats:threats, violations:violations};
+}
+/* Карточка проверки на вредоносное содержимое в редакторе программы */
+function securityCheckCardHtml(p){
+  const report = scanProgramProject(p);
+  const list = function(items, cls){
+    if(!items.length) return '';
+    return '<div class="sec-list">' + items.map(function(it){
+      return '<div class="sec-item ' + cls + '">' + icon('warn') +
+        '<div><b>' + esc(it.title) + '</b><p>' + esc(it.detail) + '</p></div></div>';
+    }).join('') + '</div>';
+  };
+  let head, cls;
+  if(report.verdict === 'malware'){
+    head = '<h3 class="verify-card__head" style="color:#ff8f92">' + icon('warn') + 'Обнаружены угрозы — проект будет удалён</h3>' +
+      '<p style="color:var(--muted);font-size:13.4px;margin-bottom:12px">При отправке на проверку проект удаляется с площадки без возможности восстановления, а вам придёт уведомление с разбором.</p>';
+    cls = 'sec-item--danger';
+  } else if(report.verdict === 'violation'){
+    head = '<h3 class="verify-card__head" style="color:#f2a35c">' + icon('warn') + 'Нужно исправить проект</h3>' +
+      '<p style="color:var(--muted);font-size:13.4px;margin-bottom:12px">Проверка выявила нарушения правил. Исправьте их — иначе отправка на проверку не пройдёт.</p>';
+    cls = 'sec-item--warn';
+  } else {
+    head = '<h3 class="verify-card__head" style="color:#7ee7b4">' + icon('shield') + 'Проверка на вредоносное ПО пройдена</h3>' +
+      '<p style="color:var(--muted);font-size:13.4px;margin-bottom:12px">Файлы, ссылки и описание проверены — угроз не обнаружено. Проект можно отправлять на модерацию.</p>';
+    cls = 'sec-item--warn';
+  }
+  return '<div class="card verify-card" style="margin-top:20px">' + head +
+    list(report.threats, 'sec-item--danger') +
+    list(report.violations, 'sec-item--warn') +
+  '</div>';
+}
+/* Отчёт о проверке: при угрозах — проект удалён, при нарушениях — нужно исправить */
+function openSecurityReport(p, report, deleted){
+  const list = function(items, cls){
+    if(!items.length) return '';
+    return '<div class="sec-list">' + items.map(function(it){
+      return '<div class="sec-item ' + cls + '">' + icon('warn') +
+        '<div><b>' + esc(it.title) + '</b><p>' + esc(it.detail) + '</p></div></div>';
+    }).join('') + '</div>';
+  };
+  const head = deleted
+    ? '<h2>Проект удалён</h2><p>При проверке обнаружено вредоносное содержимое. Проект «' + esc(p.title) +
+      '» удалён с площадки без возможности восстановления.</p>'
+    : '<h2>Нужно исправить проект</h2><p>Проверка «' + esc(p.title) + '» выявила нарушения. Исправьте их и отправьте проект снова.</p>';
+  openModal(
+    '<div class="modal__head"><div>' + head + '</div>' +
+      '<button class="modal__close" data-close type="button">' + icon('close') + '</button></div>' +
+      (deleted ? list(report.threats, 'sec-item--danger') : '') +
+      list(report.violations, 'sec-item--warn') +
+      '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">' +
+        '<a class="btn' + (deleted ? ' btn--primary' : '') + '" href="#/my" data-close>' +
+          (deleted ? 'К моим проектам' : 'Перейти к исправлению') + '</a></div>',
+    function(box){
+      const link = box.querySelector('a.btn');
+      if(link) link.addEventListener('click', function(){ closeModal(); });
+    });
+}
 function sendToModeration(id){
   const p = DB.projects.find(function(x){ return x.id === id; });
   if(!p) return;
   if(!(p.files || []).length){
     toast('err','Нужен хотя бы один файл', 'Загрузите сборку на вкладке «Версии и файлы» перед отправкой.');
     return;
+  }
+  /* Утилиты и лаунчеры проходят проверку на вредоносное содержимое */
+  if(p.cat === 'utilities' || p.cat === 'launchers'){
+    const report = scanProgramProject(p);
+    if(report.verdict === 'malware'){
+      /* Угрозы найдены — проект удаляется сразу */
+      const title = p.title;
+      DB.projects = DB.projects.filter(function(x){ return x.id !== p.id; });
+      saveProjects();
+      if(typeof notify === 'function') notify(p.ownerId,
+        'Проект «' + title + '» удалён: при проверке обнаружено вредоносное содержимое. ' +
+        'Разбор: ' + report.threats.map(function(t){ return t.title; }).join('; ') + '.', 'err', '#/my');
+      openSecurityReport(p, report, true);
+      toast('err','Проект удалён', 'Обнаружено вредоносное содержимое — проект удалён с площадки.');
+      renderProfile();
+      route(true);
+      return;
+    }
+    if(report.verdict === 'violation'){
+      /* Нарушения правил — автору предлагают исправить проект */
+      openSecurityReport(p, report, false);
+      toast('err','Нужно исправить проект', 'Проверка выявила нарушения: ' +
+        report.violations.map(function(v){ return v.title; }).join('; ') + '.');
+      route(true);
+      return;
+    }
   }
   const plagiarism = findPlagiarism(p);
   if(plagiarism){
@@ -9378,6 +9793,8 @@ function checkRowGrouped(values, attr, current){
 }
 function toolMarkingHtml(p){
   const isLauncher = p.cat === 'launchers';
+  const pricing = p.pricing || 'free';
+  const model = PRICING_MODELS.filter(function(m){ return m.id === pricing; })[0] || PRICING_MODELS[0];
   return '<div class="field"><label>Способ использования</label>' +
       cselectHtml('eUsage', TOOL_USAGE.map(function(u){ return [u, u, 'monitor']; }), p.usage || TOOL_USAGE[0], {block:true}) +
       '<span class="hint">Как запускается программа: сайт, приложение для ПК, консольная утилита, мобильное приложение или плагин сервера.</span></div>' +
@@ -9394,6 +9811,22 @@ function toolMarkingHtml(p){
         '<div class="field"><label>Поддерживаемые игры</label>' +
           checkRowGrouped(TOOL_GAMES, 'games', p.games) +
           '<span class="hint">Игры, которые умеет запускать лаунчер.</span></div>'
+      : '') +
+    /* Модель доступа: бесплатно, платный ранний доступ или навсегда платное */
+    '<div class="field"><label>Модель доступа</label>' +
+      cselectHtml('ePricing', PRICING_MODELS.map(function(m){ return [m.id, m.label, m.id === 'free' ? 'gift' : (m.id === 'early' ? 'clock' : 'wallet')]; }), pricing, {block:true}) +
+      '<span class="hint">' + esc(model.hint) + '</span></div>' +
+    (pricing === 'early'
+      ? '<div class="field"><label>Цена раннего доступа, ' + PRICE_CURRENCY + '</label>' +
+        '<input class="input" id="ePriceEarly" type="number" min="0" step="10" max="100000" value="' + (Number(p.priceEarly) || 0) + '">' +
+        '<span class="hint">Цена действует, пока программа в раннем доступе. Итоговая цена с учётом общего индекса цен: <b>' +
+          (effectivePrice(p, 'early') || 0) + ' ' + PRICE_CURRENCY + '</b>.</span></div>'
+      : '') +
+    (pricing === 'paid'
+      ? '<div class="field"><label>Цена навсегда, ' + PRICE_CURRENCY + '</label>' +
+        '<input class="input" id="ePricePaid" type="number" min="0" step="10" max="100000" value="' + (Number(p.pricePaid) || 0) + '">' +
+        '<span class="hint">Разовая покупка: доступ ко всем текущим и будущим версиям. Итоговая цена с учётом общего индекса цен: <b>' +
+          (effectivePrice(p, 'paid') || 0) + ' ' + PRICE_CURRENCY + '</b>.</span></div>'
       : '');
 }
 function hardwareEditorHtml(p){
@@ -10286,6 +10719,7 @@ function tabPublish(p){
       '<button class="btn btn--danger" id="deleteProject" type="button">' + icon('trash') + 'Удалить проект</button>' +
     '</div>' +
     verificationCardHtml(authorOf(p) || currentUser()) +
+    (p.cat === 'utilities' || p.cat === 'launchers' ? securityCheckCardHtml(p) : '') +
     '<div class="card" style="margin-top:20px">' +
       '<h3 style="font-size:15px;margin-bottom:10px">Комментарии</h3>' +
       '<label class="check"><input type="checkbox" id="eComments"' + (p.commentsEnabled === false ? '' : ' checked') + '><span>Разрешить комментарии к проекту</span></label>' +
@@ -10442,6 +10876,26 @@ function bindProjectEditor(root, id){
   bindCselect(root, 'eResolution', function(value){ p.resolution = value; touch('Разрешение обновлено.'); });
   bindCselect(root, 'eRequirements', function(value){ p.requirements = value; touch('Требования обновлены.'); });
   bindCselect(root, 'eUsage', function(value){ p.usage = value; touch('Способ использования обновлён.'); });
+  /* Модель доступа и цены: перерисовываем редактор, чтобы показать нужные поля */
+  bindCselect(root, 'ePricing', function(value){
+    p.pricing = value;
+    if(value !== 'early') p.priceEarly = 0;
+    if(value !== 'paid') p.pricePaid = 0;
+    touch('Модель доступа обновлена.');
+    route(true);
+  });
+  const priceEarlyBox = root.querySelector('#ePriceEarly');
+  if(priceEarlyBox) priceEarlyBox.addEventListener('change', function(){
+    p.priceEarly = Math.max(0, Math.round(Number(priceEarlyBox.value) || 0));
+    touch('Цена раннего доступа обновлена.');
+    route(true);
+  });
+  const pricePaidBox = root.querySelector('#ePricePaid');
+  if(pricePaidBox) pricePaidBox.addEventListener('change', function(){
+    p.pricePaid = Math.max(0, Math.round(Number(pricePaidBox.value) || 0));
+    touch('Цена обновлена.');
+    route(true);
+  });
   bindCselect(root, 'eCat', function(value){
     p.cat = value;
     const subs = catMeta(p.cat).subs || [];
@@ -11273,6 +11727,9 @@ function renderSettings(section){
       ['appearance','Внешний вид','palette'],
       ['language','Язык','globe']
     ]],
+    ['Стиль сайта', [
+      ['style','Стиль сайта','layers']
+    ]],
     ['Разработчикам', [
       ['tokens','Личные токены','code'],
       ['myapps','Ваши приложения','box']
@@ -11303,9 +11760,15 @@ function renderSettings(section){
       '<p>Изменения видно на странице немедленно, а кнопка «Сохранить» внизу закрепляет их в этом браузере.</p></div></div>';
 
   const preview = publishedProjects().slice(0, 2);
+  /* Стиль сайта: базовый или «Жидкое стекло» — независимо от цветовой темы */
+  const siteStyle = '' +
+    settingsRow('Стиль оформления', 'Базовый стиль — плоские поверхности и чёткие границы. «Жидкое стекло» — полупрозрачные панели, размытие и градиенты. Стиль применяется к любой цветовой теме.',
+      settingsSeg('siteStyle', [['basic','Базовый стиль'],['liquid','Жидкое стекло']], s.siteStyle)) +
+    '<div class="notice">' + icon('info') + '<div><b>Стиль и цвет — независимые настройки</b>' +
+      '<p>Сначала выберите цветовую тему во «Внешнем виде», а затем стиль оформления здесь. Например, светлая тема с «Жидким стеклом» даёт полупрозрачные панели на светлом фоне.</p></div></div>';
   const appearance = '' +
-    settingsRow(t('settings.theme'), 'Простой современный стиль по умолчанию. «Жидкое стекло» — отдельная тема с размытием и градиентами.',
-      settingsSeg('theme', [['dark','Тёмная'],['liquid','Жидкое стекло'],['oled','OLED'],['light','Светлая']], s.theme, syncOn)) +
+    settingsRow(t('settings.theme'), 'Цветовая тема сайта: тёмная, OLED (чистый чёрный) или светлая. Стиль оформления выбирается отдельно в разделе «Стиль сайта».',
+      settingsSeg('theme', [['dark','Тёмная'],['oled','OLED'],['light','Светлая']], s.theme, syncOn)) +
     settingsRow('Синхронизация темы с устройством', 'Автоматически повторять системную тему устройства, игнорируя выбор выше.',
       '<label class="check" style="padding:2px 0"><input type="checkbox" id="themeSync"' + (syncOn ? ' checked' : '') +
       '><span>' + (syncOn ? 'Включена' : 'Выключена') + '</span></label>') +
@@ -11324,6 +11787,9 @@ function renderSettings(section){
     settingsRow('Аватарки проектов, организаций и коллекций', 'Скругление аватарок проектов, организаций, коллекций и прочих сущностей — не влияет на аватарку профиля.',
       settingsRange('avatarRadius', isFinite(Number(s.avatarRadius)) ? Number(s.avatarRadius) : 22, 0, 50, {label:'Скругление остальных аватарок', format:function(v){ return v + '%'; }}) +
       '<div class="range-hint"><span>Квадрат</span><span>Круг</span></div>') +
+    settingsRow('Индекс цен на программы', 'Общий множитель для стоимости платных утилит и лаунчеров. Меняется, когда меняется экономическая ситуация: 1 — базовая цена, больше — дороже, меньше — дешевле. Задевает и ранний доступ, и покупку навсегда.',
+      settingsRange('priceIndex', isFinite(Number(s.priceIndex)) && Number(s.priceIndex) > 0 ? Number(s.priceIndex) : 1, 0.25, 4, {label:'Индекс цен', format:function(v){ return '×' + Number(v).toFixed(2); }}) +
+      '<div class="range-hint"><span>×0,25</span><span>×1,00</span><span>×4,00</span></div>') +
     '<div class="settings-block"><h2></h2>' +
       '<p style="color:var(--muted);font-size:13px;margin-bottom:12px">Отмеченные блоки будут закрыты при открытии страницы раздела. По умолчанию свёрнуты «Лицензия» и «Особые исключения».</p>' +
       '<div style="display:flex;gap:12px;flex-wrap:wrap">' + FILTER_BLOCKS.map(function(b){
@@ -11627,6 +12093,7 @@ function renderSettings(section){
           : section === 'payments' ? payments
           : section === 'appearance' ? appearance
           : section === 'language' ? language
+          : section === 'style' ? siteStyle
           : section === 'tokens' ? tokens
           : myAppsSection) +
       '</div>' +
@@ -11661,6 +12128,11 @@ function bindSettings(root, section){
       if(out) out.textContent = v + '%';
       applyTheme();
       updateSavebar();
+      /* Индекс цен меняет стоимость на карточках и страницах программ */
+      if(key === 'priceIndex'){
+        if(out) out.textContent = '×' + v.toFixed(2);
+        route(true);
+      }
     });
   });
   /* Плавный ползущий индикатор в сегментах настроек */
@@ -12144,6 +12616,19 @@ function route(force){
 /* ============================================================
    20. ЗАПУСК
    ============================================================ */
+/* Стиль сайта и цветовая тема — независимые настройки.
+   Раньше «Жидкое стекло» было отдельной цветовой темой, поэтому переносим
+   старое значение в новую настройку стиля. */
+function migrateSettings(){
+  if(DB.settings.theme === 'liquid'){
+    DB.settings.siteStyle = 'liquid';
+    DB.settings.theme = 'dark';
+  }
+  if(DB.settings.theme !== 'dark' && DB.settings.theme !== 'light' && DB.settings.theme !== 'oled'){
+    DB.settings.theme = 'dark';
+  }
+  if(DB.settings.siteStyle !== 'liquid') DB.settings.siteStyle = 'basic';
+}
 function init(){
   seedDemoIfEmpty();
   refreshDemoCatalog();
@@ -12154,6 +12639,7 @@ function init(){
   refreshGameScope();
   refreshToolFields();
   refreshMapData();
+  migrateSettings();
   applyTheme();
   applyI18n(document);
   renderGamesNav();
